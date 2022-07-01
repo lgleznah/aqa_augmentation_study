@@ -34,6 +34,7 @@ def generate_dataset_with_splits(output_format, preprocessing_function, input_sh
     ava_info.loc[:,'id'] = ava_info['id'].apply(str)
     ava_info.sort_values(['id'],inplace=True)
     ava_info.reset_index(inplace=True,drop=True)
+
     file_list = np.array([ava_images_folder + '/{:}.jpg'.format(i) for i in np.array(ava_info.loc[:,'id'])])
 
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
