@@ -19,12 +19,12 @@ def parse_experiment_file(filename):
 
             # Parse each experiment specification
             for exp in experiment_specs['exps']:
-                # Each element in exps must have a 'name' (string) and a list of 'layers' (list)
+                # Each element in exps must have a 'name' (string) and an optional list of 'layers' (list)
                 if 'name' not in exp or not isinstance(exp['name'], str):
                     raise ValueError(f'Error in experiment {exp}: Each experiment must have a key called "name", with a string as value')
 
-                if 'layers' not in exp or not isinstance(exp['layers'], list):
-                    raise ValueError(f'Error in experiment {exp}: Each experiment must have a key called "layers", with a list as value')
+                if 'layers' in exp and not isinstance(exp['layers'], list):
+                    raise ValueError(f'Error in experiment {exp}: "layers" must have a list as value')
 
                 # Each experiment must have a valid 'base_model' (defined in models_dict)
                 if 'base_model' not in exp or exp['base_model'] not in lmd.MODELS_DICT:
@@ -37,6 +37,10 @@ def parse_experiment_file(filename):
                 # Each experiment must have a 'batch_size' (int)
                 if 'batch_size' not in exp or not isinstance(exp['batch_size'], int):
                     raise ValueError(f'Error in experiment {exp}: Each experiment must have a key called "batch_size", with an int as value')
+
+                # Add empty layer list if layers was not specified
+                if 'layers' not in exp:
+                    exp.update({'layers': []})
 
                 # Parse each layer
                 for layer in exp['layers']:
@@ -63,6 +67,6 @@ def parse_experiment_file(filename):
             # Everything should be OK now. Parameter errors are not responsibility of the parser.
             return experiment_specs
 
-        except Exception as e:
+        except ValueError as e:
             print(e)
             return {}
