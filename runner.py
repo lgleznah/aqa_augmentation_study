@@ -34,7 +34,7 @@ if __name__ == '__main__':
     print(model_with_augmentation.summary())
 
     _, loss_function, _, _ = lmd.TRANSFORMERS_DICT[exp['output_format']]
-    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05))
+    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05, decay=1e-8))
 
     # Create model checkpoint
     checkpoints_dir = './augmentation-chkpt'
