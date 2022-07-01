@@ -1,0 +1,5 @@
+exps:
+  - name: baseline
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
