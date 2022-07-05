@@ -44,8 +44,8 @@ if __name__ == '__main__':
 
     # Create history folder
     histories_dir = './augmentation-hist'
-    if not os.path.exists(checkpoints_dir):
-        os.mkdir(checkpoints_dir)
+    if not os.path.exists(histories_dir):
+        os.mkdir(histories_dir)
 
     # Fit model!
     history = model_with_augmentation.fit(train_dataset, validation_data=val_dataset, epochs=20, callbacks=[best_checkpoint])
