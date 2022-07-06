@@ -6,7 +6,7 @@ JOBS=$(awk '/^\s\s-/ {count += 1} END {print count}' $EXPERIMENT_FILE)
 JOBS=$(($JOBS-1))
 
 # Variables for qsub
-VARS="file=$AQA_AUGMENT_ROOT/$1,experiments=$EXPERIMENT_FILE,AVA_cache,AVA_images_folder,AVA_info_folder"
+VARS="file=$AQA_AUGMENT_ROOT/$1,experiments=$EXPERIMENT_FILE,AVA_cache,AVA_images_folder,AVA_info_folder,AQA_AUGMENT_ROOT"
 
 # Run qsub
 if [ $JOBS -lt 2 ]; then
