@@ -40,7 +40,7 @@ if __name__ == '__main__':
     checkpoints_dir = './augmentation-chkpt'
     if not os.path.exists(checkpoints_dir):
         os.mkdir(checkpoints_dir)
-    best_checkpoint = ModelCheckpoint(filepath=os.path.join(checkpoints_dir,f"{exp['name']}_bestmodel.h5"), monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+    best_checkpoint = ModelCheckpoint(filepath=os.path.join(checkpoints_dir,f"{exp['name']}_bestmodel.h5"), monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weigts_only=True)
 
     # Create history folder
     histories_dir = './augmentation-hist'
