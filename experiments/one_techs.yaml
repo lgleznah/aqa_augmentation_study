@@ -1,0 +1,54 @@
+exps:
+  - name: brightness
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: brightness
+        args:
+          - 0.5: float
+        kwargs:
+          value_range: 
+            (-1,1): tuple
+  - name: contrast
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: contrast
+        args:
+          - 0.5: float
+  - name: flip
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+  - name: rotation
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: rotation
+        args:
+          - 1.0: float
+  - name: translation
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: translation
+        args:
+          - 0.5: float
+          - 0.5: float
+  - name: zoom
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
