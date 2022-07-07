@@ -56,12 +56,22 @@ def parse_experiment_file(filename):
                     if 'args' not in layer:
                         layer.update({'args': []})
 
+                    # Each element of args must be a dictionary of a single {value: data type} (data_type must be a valid type defined in TYPE_CONVERTERS)
+                    for arg in layer['args']:
+                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in lmd.TYPE_CONVERTERS:
+                            raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}, argument {arg}: Each layer argument must be a dict with a single {{value: data-type}}, and data-type must be in TYPE_CONVERTERS')
+
                     if 'kwargs' in layer and not isinstance(layer['kwargs'], dict):
-                        raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}: "args" must have a dict as value')
+                        raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}: "kwargs" must have a dict as value')
 
                     # Create default empty kw-argument dict if kwargs was not defined. This way, kwargs will not have to be specified if it is empty
                     if 'kwargs' not in layer:
                         layer.update({'kwargs': {}})
+
+                    # Kwargs must be a dictionary, with format {kwarg_name: {value: data type}} (data_type must be a valid type defined in TYPE_CONVERTERS)
+                    for kwarg, arg in zip(layer['kwargs'].keys(), layer['kwargs'].values()):
+                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in lmd.TYPE_CONVERTERS:
+                            raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}, kw-argument {kwarg}: Each layer kw-argument must be a dict with a single {{value: data-type}}, and data-type must be in TYPE_CONVERTERS')
                     
 
             # Everything should be OK now. Parameter errors are not responsibility of the parser.

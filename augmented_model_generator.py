@@ -14,7 +14,9 @@ def get_augmented_model_and_preprocess(experiment_specs):
     _, _, output_activation, output_neurons = lmd.TRANSFORMERS_DICT[experiment_specs['output_format']]
 
     for layer in experiment_specs['layers']:
-        new_layer = lmd.LAYERS_DICT[layer['layer']](*layer['args'], **layer['kwargs'])
+        layer_args = [ lmd.TYPE_CONVERTERS[list(value_type.values())[0]](list(value_type.keys())[0]) for value_type in layer['args'] ]
+        layer_kwargs = { kwarg[0]: lmd.TYPE_CONVERTERS[list(kwarg[1].values())[0]](list(kwarg[1].keys())[0]) for kwarg in layer['kwargs'].items() }
+        new_layer = lmd.LAYERS_DICT[layer['layer']](*layer_args, **layer_kwargs)
         layer_list.append(new_layer)
     
     return Sequential([InputLayer(input_shape=input_shape)] + layer_list + [base_model, Dense(output_neurons, activation=output_activation)]), preprocess_func

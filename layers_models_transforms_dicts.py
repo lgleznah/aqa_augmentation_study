@@ -6,6 +6,15 @@ from tensorflow.keras.applications import inception_v3, mobilenet, vgg16, resnet
 from rating_transformers import *
 from losses import earth_mover_loss
 
+from ast import literal_eval
+
+# Accepted data types in experiment files, and how to parse them
+TYPE_CONVERTERS = {
+    'int': int,
+    'float': float,
+    'tuple': literal_eval
+}
+
 # Augmentation layers for augmentation experiments
 LAYERS_DICT = {
     'brightness': RandomBrightness,
