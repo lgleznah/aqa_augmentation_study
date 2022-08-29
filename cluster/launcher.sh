@@ -9,7 +9,7 @@ JOBS=$(($JOBS-1))
 VARS="file=$AQA_AUGMENT_ROOT/$1,experiments=$EXPERIMENT_FILE,AVA_cache,AVA_images_folder,AVA_info_folder,AQA_AUGMENT_ROOT"
 
 # Run qsub
-if [ $JOBS -lt 2 ]; then
+if [ $JOBS -eq 0 ]; then
         qsub -l select=ngpus=1:mem=8gb -v $VARS cluster_runner.sh
 else
         qsub -l select=ngpus=1:mem=8gb -J 0-$JOBS -v $VARS cluster_runner.sh
