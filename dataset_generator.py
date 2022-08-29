@@ -22,7 +22,7 @@ def image_parser_generator(input_shape, preprocess_function):
     
     return parse_image
 
-def generate_dataset_with_splits(output_format, preprocessing_function, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000):
+def generate_dataset_with_splits(output_format, preprocessing_function, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
     
     # Fetch paths from the enviroment required for loading AVA
     ava_images_folder = os.environ['AVA_images_folder']
@@ -35,6 +35,10 @@ def generate_dataset_with_splits(output_format, preprocessing_function, input_sh
     ava_info.sort_values(['id'],inplace=True)
     ava_info.reset_index(inplace=True,drop=True)
 
+    # TODO: change dataframe to remove these images
+    bad_idxs = ['729377', '179118', '230701', '277832', '371434', '440774']
+    ava_info = ava_info[~ava_info['id'].isin(bad_idxs)]
+
     file_list = np.array([ava_images_folder + '/{:}.jpg'.format(i) for i in np.array(ava_info.loc[:,'id'])])
 
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
@@ -43,6 +47,9 @@ def generate_dataset_with_splits(output_format, preprocessing_function, input_sh
     # Perform training, validation and testing splits
     train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed)
     train_image_paths, val_image_paths, train_labels, val_labels = train_test_split(train_image_paths, train_labels, test_size = val_split, random_state = random_seed)
+
+    if (labels_only):
+        return train_labels, val_labels, test_labels
 
     # Generate datasets
     image_parser = image_parser_generator(input_shape[:2], preprocessing_function)

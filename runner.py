@@ -37,13 +37,13 @@ if __name__ == '__main__':
     model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05, decay=1e-8))
 
     # Create model checkpoint
-    checkpoints_dir = './augmentation-chkpt'
+    checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     if not os.path.exists(checkpoints_dir):
         os.mkdir(checkpoints_dir)
     best_checkpoint = ModelCheckpoint(filepath=os.path.join(checkpoints_dir,f"{exp['name']}_bestmodel.h5"), monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weigts_only=True)
 
     # Create history folder
-    histories_dir = './augmentation-hist'
+    histories_dir = f'./augmentation-hist/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     if not os.path.exists(histories_dir):
         os.mkdir(histories_dir)
 

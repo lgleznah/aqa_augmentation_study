@@ -33,7 +33,7 @@ if __name__ == '__main__':
     input_shape = lmd.MODELS_DICT[exp['base_model']][1]
     _, _, test_dataset = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size)
 
-    checkpoints_dir = './augmentation-chkpt'
+    checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     model_with_augmentation.load_weights(os.path.join(checkpoints_dir, f"{exp['name']}_bestmodel.h5"))
 
     print(model_with_augmentation.summary())
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     predictions = model_with_augmentation.predict(test_dataset)
 
     # Save predictions for further analysis
-    predictions_dir = './augmentation-preds'
+    predictions_dir = f'./augmentation-preds/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     if not os.path.exists(predictions_dir):
         os.mkdir(predictions_dir)
 
