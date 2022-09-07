@@ -13,6 +13,8 @@ image_list = os.listdir(ava_images)
 image_paths = {os.path.join(ava_images, image) for image in image_list if os.path.isfile(os.path.join(ava_images, image))}
 image_paths = list(image_paths - {'729377', '179118', '230701', '277832', '371434', '440774'})
 
+sys.stdout = open(os.devnull, 'w')
+
 ##########################################################################################################################
 ###  UTILITY FUNCTIONS
 ##########################################################################################################################
@@ -27,6 +29,8 @@ def time_function(func, results_filename, task_name):
             print(f"Time for {task_name}: {time:.2f}", file=f)
 
         return time
+    
+    print(f'Now running benchmark: {task_name}')
     return time_function_with_results_file
 
 def tf_just_read_images(filename):
@@ -38,7 +42,7 @@ def tf_resize_and_add_one(filename):
     image = tf.io.read_file(filename)
     image = tf.io.decode_jpeg(image, channels=3)
     image = tf.image.convert_image_dtype(image, tf.float32)
-    image = tf.image.resize(image, (224, 224, 3))
+    image = tf.image.resize(image, (224, 224))
     image += 1
     return image
 
@@ -49,8 +53,8 @@ def tasks_123(io_option, iterations):
     if io_option == 'python':
         for _ in range(iterations):
             for filename in image_paths:
-                with open(filename, 'r') as f:
-                    print(f)
+                with open(filename, 'rb') as f:
+                    print(f.read())
 
     elif io_option == 'tf':
         for _ in range(iterations):
@@ -68,7 +72,7 @@ def task5(optimize_io):
     if (optimize_io):
         dataset = dataset.map(tf_resize_and_add_one, num_parallel_calls=tf.data.AUTOTUNE).batch(64).prefetch(-1).cache()
     else:
-        dataset = map(tf_resize_and_add_one).batch(64)
+        dataset = dataset.map(tf_resize_and_add_one).batch(64)
     
     # Print the dataset twice to test the effect of optimizations
     for _ in range(2):
@@ -98,6 +102,10 @@ def main():
     results_file = sys.argv[1]
     parallel_run = sys.argv[2]
 
+    # Sobreescribir fichero de resultados al empezar
+    with open(results_file, 'w') as _:
+        pass
+
     # TAREA 3: Acceso en paralelo a los datos. Sólo hay que hacer algo sencillo en este caso.
     # Si no se quiere hacer esta prueba, hacer el resto
     if (parallel_run == 'true'):
@@ -123,7 +131,7 @@ def main():
         time_function(tasks_67, results_file, 'Task_6')(50000)
 
         # TAREA 7: Cargar parte del dataset en RAM
-        time_function(tasks_67, results_file, 'Task_6')(255000)
+        time_function(tasks_67, results_file, 'Task_7')(250000)
 
 
 if (__name__ == '__main__'):
