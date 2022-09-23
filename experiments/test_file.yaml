@@ -5,6 +5,7 @@ exps:
     batch_size: 64
     layers:
       - layer: brightness
+        rate: 0.5
         args:
           - 0.1
       - layer: contrast

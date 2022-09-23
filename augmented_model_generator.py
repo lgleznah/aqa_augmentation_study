@@ -3,6 +3,8 @@ import layers_models_transforms_dicts as lmd
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, InputLayer
 
+from keras_cv.layers.preprocessing import MaybeApply
+
 def get_augmented_model_and_preprocess(experiment_specs):
     layer_list = []
 
@@ -34,7 +36,12 @@ def get_augmented_model_and_preprocess(experiment_specs):
             layer_kwargs[kwarg_name] = type_converter(kwarg_value)
 
         # Create layer with the given arguments, and add to the list of layers
+        # If this layer has an augmentation probability between 0 and 1, then wrap
+        # the layer with MaybeApply
         new_layer = lmd.LAYERS_DICT[layer['layer']](*layer_args, **layer_kwargs)
+        if (float(layer['rate']) < 1.0):
+            new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']))
+
         layer_list.append(new_layer)
     
     return Sequential([InputLayer(input_shape=input_shape)] + layer_list + [base_model, Dense(output_neurons, activation=output_activation)]), preprocess_func

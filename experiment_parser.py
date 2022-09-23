@@ -52,6 +52,14 @@ def parse_experiment_file(filename):
                     if 'args' in layer and not isinstance(layer['args'], list):
                         raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}: "args" must have a list as value')
 
+                    # Optionally, each layer can specify the probability of its inputs being augmented, as a float between 0 and 1
+                    # If this value is omitted, it is given a default value of 1.0
+                    if 'rate' in layer and (not isinstance(layer['rate'], float) or layer['rate'] < 0.0 or layer['rate'] > 1.0):
+                        raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}: "rate" must be a float between 0 and 1')
+
+                    if 'rate' not in layer:
+                        layer.update({'rate': 1.0})
+
                     # Create default empty argument list if args was not defined. This way, args will not have to be specified if it is empty
                     if 'args' not in layer:
                         layer.update({'args': []})
