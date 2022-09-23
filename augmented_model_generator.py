@@ -13,10 +13,27 @@ def get_augmented_model_and_preprocess(experiment_specs):
     base_model = base_model_func(input_shape=input_shape, include_top=False, pooling ="avg", weights='imagenet')
     _, _, output_activation, output_neurons = lmd.TRANSFORMERS_DICT[experiment_specs['output_format']]
 
-    # TODO: make this mess more legible
+    # Create all augmentation layers
     for layer in experiment_specs['layers']:
-        layer_args = [ lmd.TYPE_CONVERTERS[list(value_type.values())[0]](list(value_type.keys())[0]) for value_type in layer['args'] ]
-        layer_kwargs = { kwarg[0]: lmd.TYPE_CONVERTERS[list(kwarg[1].values())[0]](list(kwarg[1].keys())[0]) for kwarg in layer['kwargs'].items() }
+
+        # Parse layer arguments, converting them to their correct type
+        layer_args = []
+        for argument in layer['args']:
+            argument_type = list(argument.values())[0]
+            argument_value = list(argument.keys())[0]
+            type_converter = lmd.TYPE_CONVERTERS[argument_type]
+            layer_args.append(type_converter(argument_value))
+
+        # Parse layer keyword arguments, converting them to their correct type
+        layer_kwargs = {}
+        for kwarg in layer['kwargs'].items():
+            kwarg_name = kwarg[0]
+            kwarg_type = list(kwarg[1].values())[0]
+            kwarg_value = list(kwarg[1].keys())[0]
+            type_converter = lmd.TYPE_CONVERTERS[kwarg_type]
+            layer_kwargs[kwarg_name] = type_converter(kwarg_value)
+
+        # Create layer with the given arguments, and add to the list of layers
         new_layer = lmd.LAYERS_DICT[layer['layer']](*layer_args, **layer_kwargs)
         layer_list.append(new_layer)
     
