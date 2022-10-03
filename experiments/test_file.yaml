@@ -7,10 +7,10 @@ exps:
       - layer: brightness
         rate: 0.5
         args:
-          - 0.1
+          - 0.1: float
       - layer: contrast
         args:
-          - 0.1
+          - 0.1: float
   - name: exp2
     base_model: mobilenet
     output_format: distribution
