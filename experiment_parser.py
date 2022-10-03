@@ -13,9 +13,14 @@ def parse_experiment_file(filename):
         try:
             experiment_specs = yaml.safe_load(f)
 
-            # The first level of the dictionary must be a key called 'exps', and a value that is a list
+            # One of the top-level entries of the dictionary must be a key called 'seed', to set the random seed for the experiments.
+            # The value must be an integer
+            if 'seed' not in experiment_specs or not isinstance(experiment_specs['seed'], int):
+                raise ValueError('Error: The dictionary must contain a top-level key called "seed", with an int as value')
+
+            # The other top-level entry of the dictionary must be a key called 'exps', and a value that is a list
             if 'exps' not in experiment_specs or not isinstance(experiment_specs['exps'], list):
-                raise ValueError('Error: The first level of the dictionary must be a key called "exps", with a list as value')
+                raise ValueError('Error: The dictionary must contain a top-level key called "exps", with a list as value')
 
             # Parse each experiment specification
             for exp in experiment_specs['exps']:

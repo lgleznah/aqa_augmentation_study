@@ -11,24 +11,40 @@ import json
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-if __name__ == '__main__':
+'''
+Run training on the specified experiment in the specified experiments file.
+Accepted command-line arguments are:
+
+    - First argument: the index of the experiment to run
+    - Second argument: the experiments file where the specified experiment is located
+    - Third argument: whether to rerun the experiment in case it was already completed
+'''
+def main():
 
     experiment_index = int(sys.argv[1])
     experiment_file = sys.argv[2]
+    rerun_completed = sys.argv[3].lower == 'true'
 
     # Parse specified experiment file
     experiment_dict = parse_experiment_file(experiment_file)
 
     exp = experiment_dict['exps'][experiment_index]
+    seed = experiment_dict['seed']
+
+    # Ignore experiment if it already exists
+    histories_dir = f'./augmentation-hist/{os.path.splitext(os.path.basename(experiment_file))[0]}'
+    if os.path.exists(os.path.join(histories_dir,f"{exp['name']}_history.json")) and rerun_completed:
+        print('Experiment already exists! Exiting...')
+        return
 
     # Generate both the model with the specified augmentation techniques and its preprocessing function
-    model_with_augmentation, preprocess_func = get_augmented_model_and_preprocess(exp)
+    model_with_augmentation, preprocess_func = get_augmented_model_and_preprocess(exp, seed)
 
     # Generate training, validation and test datasets
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = lmd.MODELS_DICT[exp['base_model']][1]
-    train_dataset, val_dataset, _ = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size)
+    train_dataset, val_dataset, _ = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size, random_seed=seed)
 
     # Show model summary and compile model
     print(model_with_augmentation.summary())
@@ -53,3 +69,6 @@ if __name__ == '__main__':
     # Save history file
     with open(os.path.join(histories_dir, f"{exp['name']}_history.json"), 'w') as f:
         json.dump(history.history, f)
+
+if __name__ == '__main__':
+    main()

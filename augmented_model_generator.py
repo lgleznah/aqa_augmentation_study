@@ -5,7 +5,7 @@ from tensorflow.keras.layers import Dense, InputLayer
 
 from keras_cv.layers.preprocessing import MaybeApply
 
-def get_augmented_model_and_preprocess(experiment_specs):
+def get_augmented_model_and_preprocess(experiment_specs, seed):
     layer_list = []
 
     # Fetch model parameters: base model, input shape, and the specific preprocessing function of the model
@@ -34,6 +34,8 @@ def get_augmented_model_and_preprocess(experiment_specs):
             kwarg_value = list(kwarg[1].keys())[0]
             type_converter = lmd.TYPE_CONVERTERS[kwarg_type]
             layer_kwargs[kwarg_name] = type_converter(kwarg_value)
+        
+        layer_kwargs.update({'seed': seed})
 
         # Create layer with the given arguments, and add to the list of layers
         # If this layer has an augmentation probability between 0 and 1, then wrap
