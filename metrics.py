@@ -123,11 +123,12 @@ def main():
     experiment_dict = parse_experiment_file(experiment_file)
 
     exp = experiment_dict['exps'][experiment_index]
+    seed = experiment_dict['seed']
 
     predictions_dir = f'./augmentation-preds/{os.path.splitext(os.path.basename(experiment_file))[0]}'
 
     # Generate test dataset
-    _, preprocess_func = get_augmented_model_and_preprocess(exp)
+    _, preprocess_func = get_augmented_model_and_preprocess(exp, seed)
 
     output_format = exp['output_format']
     batch_size = exp['batch_size']

@@ -23,9 +23,10 @@ if __name__ == '__main__':
     experiment_dict = parse_experiment_file(experiment_file)
 
     exp = experiment_dict['exps'][experiment_index]
+    seed = experiment_dict['seed']
 
     # Generate model preprocessing function
-    model_with_augmentation, preprocess_func = get_augmented_model_and_preprocess(exp)
+    model_with_augmentation, preprocess_func = get_augmented_model_and_preprocess(exp, seed)
 
     # Generate training, validation and test datasets
     output_format = exp['output_format']
