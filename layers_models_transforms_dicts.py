@@ -12,7 +12,8 @@ from ast import literal_eval
 TYPE_CONVERTERS = {
     'int': int,
     'float': float,
-    'tuple': literal_eval
+    'tuple': literal_eval,
+    'string': str
 }
 
 # Augmentation layers for augmentation experiments
