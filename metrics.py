@@ -7,7 +7,7 @@ from experiment_parser import parse_experiment_file
 from augmented_model_generator import get_augmented_model_and_preprocess
 from dataset_generator import generate_dataset_with_splits
 
-import layers_models_transforms_dicts as lmd
+import valid_parameters_dicts as vpd
 
 import numpy as np
 import pandas as pd
@@ -132,7 +132,7 @@ def main():
 
     output_format = exp['output_format']
     batch_size = exp['batch_size']
-    input_shape = lmd.MODELS_DICT[exp['base_model']][1]
+    input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     _, _, test_scores = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size, labels_only=True)
         
     predictions = np.load(os.path.join(predictions_dir, f"{exp['name']}_predictions.npy"))

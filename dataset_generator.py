@@ -1,7 +1,7 @@
 # Utilities for generating a TensorFlow Dataset object for the AVA aesthetics dataset
 # This code has been adapted from code from ferrubio, in the private repository: https://github.com/ferrubio/AQA-framework
 
-import layers_models_transforms_dicts as lmd
+import valid_parameters_dicts as vpd
 
 import pandas as pd
 import numpy as np
@@ -42,7 +42,7 @@ def generate_dataset_with_splits(output_format, preprocessing_function, input_sh
     file_list = np.array([ava_images_folder + '/{:}.jpg'.format(i) for i in np.array(ava_info.loc[:,'id'])])
 
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
-    labels = lmd.TRANSFORMERS_DICT[output_format][0](np.array(ava_info.iloc[:,2:12]))
+    labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(ava_info.iloc[:,2:12]))
 
     # Perform training, validation and testing splits
     train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed)

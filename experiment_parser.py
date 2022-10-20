@@ -1,4 +1,4 @@
-import layers_models_transforms_dicts as lmd
+import valid_parameters_dicts as vpd
 
 import yaml
 
@@ -32,11 +32,11 @@ def parse_experiment_file(filename):
                     raise ValueError(f'Error in experiment {exp}: "layers" must have a list as value')
 
                 # Each experiment must have a valid 'base_model' (defined in models_dict)
-                if 'base_model' not in exp or exp['base_model'] not in lmd.MODELS_DICT:
+                if 'base_model' not in exp or exp['base_model'] not in vpd.MODELS_DICT:
                     raise ValueError(f'Error in experiment {exp}: Each experiment must have a key called "base_model", whose value is defined in models_dict')
 
                 # Each experiment must have a valid 'output_format' (defined in transformers_dict)
-                if 'output_format' not in exp or exp['output_format'] not in lmd.TRANSFORMERS_DICT:
+                if 'output_format' not in exp or exp['output_format'] not in vpd.TRANSFORMERS_DICT:
                     raise ValueError(f'Error in experiment {exp}: Each experiment must have a key called "output_format", whose value is defined in transformers_dict')
 
                 # Each experiment must have a 'batch_size' (int)
@@ -51,7 +51,7 @@ def parse_experiment_file(filename):
                 for layer in exp['layers']:
                     # Each element in layers must have a valid 'layer' (defined in layers_dict).
                     # Optionally a list of 'args', and a dict of 'kwargs'
-                    if 'layer' not in layer or layer['layer'] not in lmd.LAYERS_DICT:
+                    if 'layer' not in layer or layer['layer'] not in vpd.LAYERS_DICT:
                         raise ValueError(f'Error in experiment {exp["name"]}, layer {layer}: Each layer must have a key called "layer", whose value is defined in layers_dict')
 
                     if 'args' in layer and not isinstance(layer['args'], list):
@@ -71,7 +71,7 @@ def parse_experiment_file(filename):
 
                     # Each element of args must be a dictionary of a single {value: data type} (data_type must be a valid type defined in TYPE_CONVERTERS)
                     for arg in layer['args']:
-                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in lmd.TYPE_CONVERTERS:
+                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in vpd.TYPE_CONVERTERS:
                             raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}, argument {arg}: Each layer argument must be a dict with a single {{value: data-type}}, and data-type must be in TYPE_CONVERTERS')
 
                     if 'kwargs' in layer and not isinstance(layer['kwargs'], dict):
@@ -83,7 +83,7 @@ def parse_experiment_file(filename):
 
                     # Kwargs must be a dictionary, with format {kwarg_name: {value: data type}} (data_type must be a valid type defined in TYPE_CONVERTERS)
                     for kwarg, arg in zip(layer['kwargs'].keys(), layer['kwargs'].values()):
-                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in lmd.TYPE_CONVERTERS:
+                        if not isinstance(arg, dict) or len(arg) != 1 or list(arg.values())[0] not in vpd.TYPE_CONVERTERS:
                             raise ValueError(f'Error in experiment {exp["name"]}, layer {layer["layer"]}, kw-argument {kwarg}: Each layer kw-argument must be a dict with a single {{value: data-type}}, and data-type must be in TYPE_CONVERTERS')
                     
 

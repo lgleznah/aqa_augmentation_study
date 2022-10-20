@@ -2,7 +2,7 @@ from experiment_parser import parse_experiment_file
 from augmented_model_generator import get_augmented_model_and_preprocess
 from dataset_generator import generate_dataset_with_splits
 
-import layers_models_transforms_dicts as lmd
+import valid_parameters_dicts as vpd
 
 import os
 import sys
@@ -43,13 +43,13 @@ def main():
     # Generate training, validation and test datasets
     output_format = exp['output_format']
     batch_size = exp['batch_size']
-    input_shape = lmd.MODELS_DICT[exp['base_model']][1]
+    input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     train_dataset, val_dataset, _ = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size, random_seed=seed)
 
     # Show model summary and compile model
     print(model_with_augmentation.summary())
 
-    _, loss_function, _, _ = lmd.TRANSFORMERS_DICT[exp['output_format']]
+    _, loss_function, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
     model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05, decay=1e-8))
 
     # Create model checkpoint
