@@ -22,7 +22,7 @@ Accepted command-line arguments are:
 def main():
 
     experiment_index = int(sys.argv[1])
-    experiment_file = sys.argv[2]
+    experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
     rerun_completed = sys.argv[3].lower == 'true'
 
     # Parse specified experiment file
