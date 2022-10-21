@@ -28,21 +28,12 @@ def generate_dataset_with_splits(output_format, preprocessing_function, input_sh
     ava_images_folder = os.environ['AVA_images_folder']
     ava_info_folder = os.environ['AVA_info_folder']
 
-    # Load ava_info DataFrame
-    file_pickle = gzip.open(f'{ava_info_folder}/AVA_info.pklz','rb',2)
-    ava_info = pd.read_pickle(file_pickle, compression=None)
-    ava_info.loc[:,'id'] = ava_info['id'].apply(str)
-    ava_info.sort_values(['id'],inplace=True)
-    ava_info.reset_index(inplace=True,drop=True)
-
-    # TODO: change dataframe to remove these images
-    bad_idxs = ['729377', '179118', '230701', '277832', '371434', '440774']
-    ava_info = ava_info[~ava_info['id'].isin(bad_idxs)]
-
-    file_list = np.array([ava_images_folder + '/{:}.jpg'.format(i) for i in np.array(ava_info.loc[:,'id'])])
+    # Load ava_info DataFrame, and build image paths from IDs
+    ava_info = pd.read_csv(f'{ava_info_folder}/AVA_info.csv', index_col=0)
+    file_list = np.array([ava_images_folder + f'/{i}' for i in np.array(ava_info.loc[:,'id'])])
 
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
-    labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(ava_info.iloc[:,2:12]))
+    labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(ava_info.iloc[:,1:11]))
 
     # Perform training, validation and testing splits
     train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed)
