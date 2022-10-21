@@ -133,7 +133,9 @@ def main():
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
-    _, _, test_scores = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size, labels_only=True)
+    dataset_specs = vpd.DATASETS_DICT[exp['dataset']]
+    label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
+    _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, labels_only=True, random_seed=seed)
         
     predictions = np.load(os.path.join(predictions_dir, f"{exp['name']}_predictions.npy"))
     groundtruth = test_scores

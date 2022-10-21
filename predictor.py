@@ -32,7 +32,9 @@ if __name__ == '__main__':
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
-    _, _, test_dataset = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size)
+    dataset_specs = vpd.DATASETS_DICT[exp['dataset']]
+    label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
+    _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, random_seed = seed)
 
     checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     model_with_augmentation.load_weights(os.path.join(checkpoints_dir, f"{exp['name']}_bestmodel.h5"))

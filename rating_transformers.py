@@ -23,3 +23,8 @@ def binary_transform(scores):
 def weights_transform(scores):
     mean_scores = mean_transform(scores)
     return np.vstack(([1-mean_scores],[mean_scores])).T
+
+# Dummy function for Photozilla labels transformer function. The labels are already
+# OK as they are in the CSV
+def tenclass_transform(label):
+    return label

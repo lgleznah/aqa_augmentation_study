@@ -22,6 +22,10 @@ def parse_experiment_file(filename):
             if 'exps' not in experiment_specs or not isinstance(experiment_specs['exps'], list):
                 raise ValueError('Error: The dictionary must contain a top-level key called "exps", with a list as value')
 
+            # The last top-level entry of the dictionary must be a key called 'dataset', and a value that is a string (defined in vpd.DATASETS_DICTS)
+            if 'dataset' not in experiment_specs or not isinstance(experiment_specs['dataset'], str) or experiment_specs['dataset'] not in vpd.DATASETS_DICT:
+                raise ValueError('Error: The dictionary must contain a top-level key called "dataset", with a string as value. The string must be defined in vpd.DATASETS_DICT')
+
             # Parse each experiment specification
             for exp in experiment_specs['exps']:
                 # Each element in exps must have a 'name' (string) and an optional list of 'layers' (list)

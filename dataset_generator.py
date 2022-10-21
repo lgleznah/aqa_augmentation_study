@@ -1,4 +1,4 @@
-# Utilities for generating a TensorFlow Dataset object for the AVA aesthetics dataset
+# Utilities for generating a TensorFlow Dataset object for various image datasets
 # This code has been adapted from code from ferrubio, in the private repository: https://github.com/ferrubio/AQA-framework
 
 import valid_parameters_dicts as vpd
@@ -6,7 +6,6 @@ import valid_parameters_dicts as vpd
 import pandas as pd
 import numpy as np
 import os
-import gzip
 
 import tensorflow as tf
 
@@ -22,18 +21,18 @@ def image_parser_generator(input_shape, preprocess_function):
     
     return parse_image
 
-def generate_dataset_with_splits(output_format, preprocessing_function, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
+def generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocessing_function, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
     
     # Fetch paths from the enviroment required for loading AVA
-    ava_images_folder = os.environ['AVA_images_folder']
-    ava_info_folder = os.environ['AVA_info_folder']
+    images_folder = os.environ[dataset_specs[1]]
+    info_folder = os.environ[dataset_specs[0]]
 
     # Load ava_info DataFrame, and build image paths from IDs
-    ava_info = pd.read_csv(f'{ava_info_folder}/AVA_info.csv', index_col=0)
-    file_list = np.array([ava_images_folder + f'/{i}' for i in np.array(ava_info.loc[:,'id'])])
+    info_csv = pd.read_csv(f'{info_folder}/info.csv', index_col=0)
+    file_list = np.array([images_folder + f'/{i}' for i in np.array(info_csv.loc[:,'id'])])
 
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
-    labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(ava_info.iloc[:,1:11]))
+    labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(info_csv.iloc[:,label_columns]))
 
     # Perform training, validation and testing splits
     train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed)

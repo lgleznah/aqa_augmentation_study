@@ -44,12 +44,14 @@ def main():
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
-    train_dataset, val_dataset, _ = generate_dataset_with_splits(output_format, preprocess_func, input_shape, batch_size, random_seed=seed)
+    dataset_specs = vpd.DATASETS_DICT[exp['dataset']]
+    label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
+    train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, random_seed=seed)
 
     # Show model summary and compile model
     print(model_with_augmentation.summary())
 
-    _, loss_function, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
+    _, _, loss_function, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
     model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05, decay=1e-8))
 
     # Create model checkpoint

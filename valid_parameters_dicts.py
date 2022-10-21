@@ -39,10 +39,19 @@ MODELS_DICT = {
 }
 
 # Rating transform functions. Each dict entry includes the transfomer function to change the format of the
-# model, the loss function to be used with each format, the activation function of the final layer and the number of output neurons
+# model, the CSV columns to use for each transformation, the loss function to be used with each format, 
+# the activation function of the final layer and the number of output neurons
 TRANSFORMERS_DICT = {
-    'distribution': (distribution_transform, earth_mover_loss, 'softmax', 10),
-    'mean': (mean_transform, 'mean_squared_error', 'linear', 1),
-    'binary': (binary_transform, 'binary_crossentropy', 'softmax', 1),
-    'weights': (weights_transform, 'categorical_crossentropy', 'softmax', 2)
+    'distribution': (distribution_transform, slice(1,11), earth_mover_loss, 'softmax', 10),
+    'mean': (mean_transform, slice(1, 11), 'mean_squared_error', 'linear', 1),
+    'binary': (binary_transform, slice(1, 11), 'binary_crossentropy', 'softmax', 1),
+    'weights': (weights_transform, slice(1, 11), 'categorical_crossentropy', 'softmax', 2),
+    'tenclass': (tenclass_transform, 1, 'sparse_categorical_crossentropy', 'softmax', 10)
+}
+
+# Accepted datasets in the experiment files. Each dict entry specifies the environment variables containing the
+# paths to their CSV description file and the base path to their images, respectively
+DATASETS_DICT = {
+    'ava': ('AVA_info_folder', 'AVA_images_folder'),
+    'photozilla': ('Photozilla_info_folder', 'Photozilla_images_folder')
 }
