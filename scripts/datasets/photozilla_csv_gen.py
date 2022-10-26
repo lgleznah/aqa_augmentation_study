@@ -34,7 +34,9 @@ def main():
         'label': list(map(lambda path: labels_dict[path.split(os.sep)[0]], relative_paths))
     }
 
+    # Only keep around 25% of the dataset, for fair comparison with AVA
     df = pd.DataFrame.from_dict(df_dict)
+    df = df.groupby('label', group_keys=False).apply(lambda x : x.head(25000))
     df.to_csv('info.csv')
 
 if __name__ == "__main__":
