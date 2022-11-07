@@ -11,6 +11,10 @@ def main():
     metric_line = metric_lines[metric_name]
     rates = [ int(x) for x in sys.argv[3:] ]
 
+    plot_dir = os.path.join('figures', experiment_group)
+    if not os.path.exists(plot_dir):
+        os.mkdir(plot_dir)
+
     for exp in experiment_names:
         metric_values = []
         for rate in rates:
@@ -21,7 +25,7 @@ def main():
         plt.plot(rates, metric_values, label=exp)
     
     plt.legend()
-    plt.savefig(os.path.join('figures', experiment_group, f'plot_{metric_name}.png'))
+    plt.savefig(os.path.join(plot_dir, f'plot_{metric_name}.png'))
 
 if __name__ == "__main__":
     main()
