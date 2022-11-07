@@ -32,7 +32,7 @@ if __name__ == '__main__':
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
-    dataset_specs = vpd.DATASETS_DICT[exp['dataset']]
+    dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
     _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, random_seed = seed)
 

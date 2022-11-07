@@ -17,6 +17,7 @@ import tensorflow as tf
 import sys
 
 from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_squared_error, mean_absolute_error, confusion_matrix
+from sklearn.preprocessing import OneHotEncoder
 from scipy.stats import rankdata
 from scipy.stats import entropy
 
@@ -113,7 +114,30 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
         print("--------------------------------------------------------", file=f)
         
     bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
+
+def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
+    """
+    Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
+    WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
     
+    After printing such metrics, plot predictions and ground-truth together.
+    
+    Assumes both predictions and ground-truths to be a 2-component probability distribution, in the range (0,1). 
+    """
+    sparse_predictions = np.argmax(pred, axis=1)
+    onehot_groundtruth = OneHotEncoder().fit_transform(list(zip(ground))).toarray()
+    bal_accuracy = balanced_accuracy_score(ground, sparse_predictions)
+    accuracy = accuracy_score(ground, sparse_predictions)
+    mse = mean_squared_error(onehot_groundtruth, pred)
+        
+    with open(os.path.join(results_dir, f"{model_name}_results.txt"), 'a') as f:
+        print(f"RESULTS W.R.T. {ground_name}: ", file=f)
+        print("Balanced accuracy: " + str(bal_accuracy), file=f)
+        print("Accuracy: " + str(accuracy), file=f)
+        print("Mean squared error: " + str(mse), file=f)
+        print(f"{bal_accuracy:.4f} & {accuracy:.4f} & {mse:.4f} \\\\ \\hline", file=f)
+        print("--------------------------------------------------------", file=f)
+            
 ######################################################################################################################################
 def main():
     experiment_index = int(sys.argv[1])
@@ -133,7 +157,7 @@ def main():
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
-    dataset_specs = vpd.DATASETS_DICT[exp['dataset']]
+    dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
     _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, labels_only=True, random_seed=seed)
         
@@ -161,6 +185,10 @@ def main():
     # Binary-like ground-truths
     if (output_format == 'weights'):
         get_binary_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+
+    # Ten-class ground-truths
+    if (output_format == 'tenclass'):
+        get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
 
 if __name__ == '__main__':
     main()
