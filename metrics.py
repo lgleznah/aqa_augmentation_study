@@ -141,7 +141,7 @@ def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name
 ######################################################################################################################################
 def main():
     experiment_index = int(sys.argv[1])
-    experiment_file = sys.argv[2]
+    experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
 
     # Parse specified experiment file
     experiment_dict = parse_experiment_file(experiment_file)

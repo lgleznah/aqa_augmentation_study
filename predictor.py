@@ -17,7 +17,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 if __name__ == '__main__':
 
     experiment_index = int(sys.argv[1])
-    experiment_file = sys.argv[2]
+    experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
 
     # Parse specified experiment file
     experiment_dict = parse_experiment_file(experiment_file)
