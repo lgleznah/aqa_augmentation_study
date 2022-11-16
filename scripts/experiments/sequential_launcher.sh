@@ -15,5 +15,5 @@ FILE=$AQA_AUGMENT_ROOT/$1
 for i in $(seq 0 $JOBS_ITER)
 do
     echo "Running experiment with index ${i}"
-    python $FILE $i $EXPERIMENT_FILE $RERUN
+    python $FILE $i $EXPERIMENT_NAME $RERUN
 done
