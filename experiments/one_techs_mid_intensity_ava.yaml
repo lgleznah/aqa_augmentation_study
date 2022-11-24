@@ -1,15 +1,15 @@
 seed: 1234
 dataset: ava
-exps:  
+exps:
   - name: brightness_10
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.1
         args:
-          - 0.1: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -20,9 +20,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.2
         args:
-          - 0.2: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -33,9 +33,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.3
         args:
-          - 0.3: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -46,9 +46,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.4
         args:
-          - 0.4: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -59,7 +59,7 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.5
         args:
           - 0.5: float
         kwargs:
@@ -72,9 +72,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.6
         args:
-          - 0.6: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -85,9 +85,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.7
         args:
-          - 0.7: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -98,9 +98,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.8
         args:
-          - 0.8: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -111,9 +111,9 @@ exps:
     batch_size: 128
     layers:
       - layer: brightness
-        rate: 1.0
+        rate: 0.9
         args:
-          - 0.9: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -126,7 +126,7 @@ exps:
       - layer: brightness
         rate: 1.0
         args:
-          - 1.0: float
+          - 0.5: float
         kwargs:
           value_range:
             (-1,1): tuple
@@ -137,9 +137,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.1
         args:
-          - 0.1: float
+          - 0.5: float
 
   - name: contrast_20
     base_model: mobilenet
@@ -147,9 +147,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.2
         args:
-          - 0.2: float
+          - 0.5: float
 
   - name: contrast_30
     base_model: mobilenet
@@ -157,9 +157,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.3
         args:
-          - 0.3: float
+          - 0.5: float
 
   - name: contrast_40
     base_model: mobilenet
@@ -167,9 +167,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.4
         args:
-          - 0.4: float
+          - 0.5: float
 
   - name: contrast_50
     base_model: mobilenet
@@ -177,7 +177,7 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.5
         args:
           - 0.5: float
 
@@ -187,9 +187,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.6
         args:
-          - 0.6: float
+          - 0.5: float
 
   - name: contrast_70
     base_model: mobilenet
@@ -197,9 +197,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.7
         args:
-          - 0.7: float
+          - 0.5: float
 
   - name: contrast_80
     base_model: mobilenet
@@ -207,9 +207,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.8
         args:
-          - 0.8: float
+          - 0.5: float
 
   - name: contrast_90
     base_model: mobilenet
@@ -217,9 +217,9 @@ exps:
     batch_size: 128
     layers:
       - layer: contrast
-        rate: 1.0
+        rate: 0.9
         args:
-          - 0.9: float
+          - 0.5: float
 
   - name: contrast_100
     base_model: mobilenet
@@ -229,19 +229,99 @@ exps:
       - layer: contrast
         rate: 1.0
         args:
-          - 1.0: float
-  
-  - name: flip_horizontal
+          - 0.5: float
+
+  - name: flip_10
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
     layers:
       - layer: flip
-        rate: 1.0
+        rate: 0.1
         args:
-          - horizontal: string
+          - vertical: string
 
-  - name: flip_vertical
+  - name: flip_20
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.2
+        args:
+          - vertical: string
+
+  - name: flip_30
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.3
+        args:
+          - vertical: string
+
+  - name: flip_40
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.4
+        args:
+          - vertical: string
+
+  - name: flip_50
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.5
+        args:
+          - vertical: string
+
+  - name: flip_60
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.6
+        args:
+          - vertical: string
+
+  - name: flip_70
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.7
+        args:
+          - vertical: string
+
+  - name: flip_80
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.8
+        args:
+          - vertical: string
+
+  - name: flip_90
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.9
+        args:
+          - vertical: string
+
+  - name: flip_100
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
@@ -251,25 +331,20 @@ exps:
         args:
           - vertical: string
 
-  - name: flip_both
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: flip
-        rate: 1.0
-        args:
-          - horizontal_and_vertical: string
-
   - name: rotation_10
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.1
         args:
-          - 0.1: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_20
     base_model: mobilenet
@@ -277,9 +352,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.2
         args:
-          - 0.2: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_30
     base_model: mobilenet
@@ -287,9 +367,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.3
         args:
-          - 0.3: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_40
     base_model: mobilenet
@@ -297,9 +382,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.4
         args:
-          - 0.4: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_50
     base_model: mobilenet
@@ -307,9 +397,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.5
         args:
           - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_60
     base_model: mobilenet
@@ -317,9 +412,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.6
         args:
-          - 0.6: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_70
     base_model: mobilenet
@@ -327,9 +427,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.7
         args:
-          - 0.7: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_80
     base_model: mobilenet
@@ -337,9 +442,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.8
         args:
-          - 0.8: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_90
     base_model: mobilenet
@@ -347,9 +457,14 @@ exps:
     batch_size: 128
     layers:
       - layer: rotation
-        rate: 1.0
+        rate: 0.9
         args:
-          - 0.9: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: rotation_100
     base_model: mobilenet
@@ -359,18 +474,28 @@ exps:
       - layer: rotation
         rate: 1.0
         args:
-          - 1.0: float
-  
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
   - name: translation_10
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.1
         args:
-          - 0.1: float
-          - 0.1: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_20
     base_model: mobilenet
@@ -378,10 +503,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.2
         args:
-          - 0.2: float
-          - 0.2: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_30
     base_model: mobilenet
@@ -389,10 +519,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.3
         args:
-          - 0.3: float
-          - 0.3: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_40
     base_model: mobilenet
@@ -400,10 +535,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.4
         args:
-          - 0.4: float
-          - 0.4: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_50
     base_model: mobilenet
@@ -411,10 +551,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.5
         args:
           - 0.5: float
           - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_60
     base_model: mobilenet
@@ -422,10 +567,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.6
         args:
-          - 0.6: float
-          - 0.6: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_70
     base_model: mobilenet
@@ -433,10 +583,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.7
         args:
-          - 0.7: float
-          - 0.7: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_80
     base_model: mobilenet
@@ -444,10 +599,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.8
         args:
-          - 0.8: float
-          - 0.8: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_90
     base_model: mobilenet
@@ -455,10 +615,15 @@ exps:
     batch_size: 128
     layers:
       - layer: translation
-        rate: 1.0
+        rate: 0.9
         args:
-          - 0.9: float
-          - 0.9: float
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: translation_100
     base_model: mobilenet
@@ -468,21 +633,30 @@ exps:
       - layer: translation
         rate: 1.0
         args:
-          - 1.0: float
-          - 1.0: float
-  
+          - 0.5: float
+          - 0.5: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
   - name: zoom_10
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
     layers:
       - layer: zoom
-        rate: 1.0
+        rate: 0.1
         args:
-          - 0.1: float
+          - 0.5: float
         kwargs:
           width_factor:
-            0.1: float
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: zoom_20
     base_model: mobilenet
@@ -490,12 +664,16 @@ exps:
     batch_size: 128
     layers:
       - layer: zoom
-        rate: 1.0
+        rate: 0.2
         args:
-          - 0.2: float
+          - 0.5: float
         kwargs:
           width_factor:
-            0.2: float
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: zoom_30
     base_model: mobilenet
@@ -503,12 +681,16 @@ exps:
     batch_size: 128
     layers:
       - layer: zoom
-        rate: 1.0
+        rate: 0.3
         args:
-          - 0.3: float
+          - 0.5: float
         kwargs:
           width_factor:
-            0.3: float
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: zoom_40
     base_model: mobilenet
@@ -516,14 +698,103 @@ exps:
     batch_size: 128
     layers:
       - layer: zoom
-        rate: 1.0
+        rate: 0.4
         args:
-          - 0.4: float
+          - 0.5: float
         kwargs:
           width_factor:
-            0.4: float
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
 
   - name: zoom_50
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.5
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
+  - name: zoom_60
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.6
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
+  - name: zoom_70
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.7
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
+  - name: zoom_80
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.8
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
+  - name: zoom_90
+    base_model: mobilenet
+    output_format: distribution
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.9
+        args:
+          - 0.5: float
+        kwargs:
+          width_factor:
+            0.5: float
+          fill_mode:
+            constant: string
+          fill_value:
+            1.0: float
+
+  - name: zoom_100
     base_model: mobilenet
     output_format: distribution
     batch_size: 128
@@ -535,68 +806,8 @@ exps:
         kwargs:
           width_factor:
             0.5: float
-
-  - name: zoom_60
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: zoom
-        rate: 1.0
-        args:
-          - 0.6: float
-        kwargs:
-          width_factor:
-            0.6: float
-
-  - name: zoom_70
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: zoom
-        rate: 1.0
-        args:
-          - 0.7: float
-        kwargs:
-          width_factor:
-            0.7: float
-
-  - name: zoom_80
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: zoom
-        rate: 1.0
-        args:
-          - 0.8: float
-        kwargs:
-          width_factor:
-            0.8: float
-
-  - name: zoom_90
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: zoom
-        rate: 1.0
-        args:
-          - 0.9: float
-        kwargs:
-          width_factor:
-            0.9: float
-
-  - name: zoom_100
-    base_model: mobilenet
-    output_format: distribution
-    batch_size: 128
-    layers:
-      - layer: zoom
-        rate: 1.0
-        args:
-          - 1.0: float
-        kwargs:
-          width_factor:
+          fill_mode:
+            constant: string
+          fill_value:
             1.0: float
+
