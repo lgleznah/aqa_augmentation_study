@@ -42,7 +42,7 @@ def get_augmented_model_and_preprocess(experiment_specs, seed):
         # the layer with MaybeApply
         new_layer = vpd.LAYERS_DICT[layer['layer']](*layer_args, **layer_kwargs)
         if (float(layer['rate']) < 1.0):
-            new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']))
+            new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']), seed=seed)
 
         layer_list.append(new_layer)
     

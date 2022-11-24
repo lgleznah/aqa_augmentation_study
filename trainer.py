@@ -7,33 +7,47 @@ import valid_parameters_dicts as vpd
 import os
 import sys
 import json
+import random
 
+import tensorflow as tf
+import numpy as np
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-'''
-Run training on the specified experiment in the specified experiments file.
-Accepted command-line arguments are:
+def set_seed(seed: int = 42) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+    tf.experimental.numpy.random.seed(seed)
+    # When running on the CuDNN backend, two further options must be set
+    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    # Set a fixed value for the hash seed
+    os.environ["PYTHONHASHSEED"] = str(seed)
 
-    - First argument: the index of the experiment to run
-    - Second argument: the experiments file where the specified experiment is located
-    - Third argument: whether to rerun the experiment in case it was already completed
-'''
 def main():
+    '''
+    Run training on the specified experiment in the specified experiments file.
+    Accepted command-line arguments are:
 
+        - First argument: the index of the experiment to run
+        - Second argument: the experiments file where the specified experiment is located
+        - Third argument: whether to rerun the experiment in case it was already completed
+    '''
     experiment_index = int(sys.argv[1])
     experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
-    rerun_completed = sys.argv[3].lower == 'true'
+    ignore_completed = sys.argv[3].lower() == 'true'
 
     # Parse specified experiment file
     experiment_dict = parse_experiment_file(experiment_file)
 
     exp = experiment_dict['exps'][experiment_index]
     seed = experiment_dict['seed']
+    set_seed(seed)
 
     # Ignore experiment if it already exists
     histories_dir = f'./augmentation-hist/{os.path.splitext(os.path.basename(experiment_file))[0]}'
-    if os.path.exists(os.path.join(histories_dir,f"{exp['name']}_history.json")) and rerun_completed:
+    if os.path.exists(os.path.join(histories_dir,f"{exp['name']}_history.json")) and ignore_completed:
         print('Experiment already exists! Exiting...')
         return
 
