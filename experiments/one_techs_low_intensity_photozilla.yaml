@@ -314,7 +314,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_20
     base_model: mobilenet
@@ -329,7 +329,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_30
     base_model: mobilenet
@@ -344,7 +344,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_40
     base_model: mobilenet
@@ -359,7 +359,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_50
     base_model: mobilenet
@@ -374,7 +374,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_60
     base_model: mobilenet
@@ -389,7 +389,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_70
     base_model: mobilenet
@@ -404,7 +404,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_80
     base_model: mobilenet
@@ -419,7 +419,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_90
     base_model: mobilenet
@@ -434,7 +434,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: rotation_100
     base_model: mobilenet
@@ -449,7 +449,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_10
     base_model: mobilenet
@@ -465,7 +465,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_20
     base_model: mobilenet
@@ -481,7 +481,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_30
     base_model: mobilenet
@@ -497,7 +497,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_40
     base_model: mobilenet
@@ -513,7 +513,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_50
     base_model: mobilenet
@@ -529,7 +529,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_60
     base_model: mobilenet
@@ -545,7 +545,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_70
     base_model: mobilenet
@@ -561,7 +561,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_80
     base_model: mobilenet
@@ -577,7 +577,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_90
     base_model: mobilenet
@@ -593,7 +593,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: translation_100
     base_model: mobilenet
@@ -609,7 +609,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_10
     base_model: mobilenet
@@ -626,7 +626,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_20
     base_model: mobilenet
@@ -643,7 +643,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_30
     base_model: mobilenet
@@ -660,7 +660,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_40
     base_model: mobilenet
@@ -677,7 +677,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_50
     base_model: mobilenet
@@ -694,7 +694,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_60
     base_model: mobilenet
@@ -711,7 +711,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_70
     base_model: mobilenet
@@ -728,7 +728,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_80
     base_model: mobilenet
@@ -745,7 +745,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_90
     base_model: mobilenet
@@ -762,7 +762,7 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
   - name: zoom_100
     base_model: mobilenet
@@ -779,5 +779,5 @@ exps:
           fill_mode:
             constant: string
           fill_value:
-            1.0: float
+            255.0: float
 
