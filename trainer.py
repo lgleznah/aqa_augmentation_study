@@ -1,5 +1,5 @@
 from experiment_parser import parse_experiment_file
-from augmented_model_generator import get_augmented_model_and_preprocess
+from augmented_model_generator import get_augmented_model
 from dataset_generator import generate_dataset_with_splits
 
 import valid_parameters_dicts as vpd
@@ -52,7 +52,7 @@ def main():
         return
 
     # Generate both the model with the specified augmentation techniques and its preprocessing function
-    model_with_augmentation, preprocess_func = get_augmented_model_and_preprocess(exp, seed)
+    model_with_augmentation = get_augmented_model(exp, seed)
 
     # Generate training, validation and test datasets
     output_format = exp['output_format']
@@ -60,7 +60,7 @@ def main():
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, random_seed=seed)
+    train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, random_seed=seed)
 
     # Show model summary and compile model
     print(model_with_augmentation.summary())

@@ -1,12 +1,12 @@
 import valid_parameters_dicts as vpd
 
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, InputLayer
 
 from keras_cv.layers.preprocessing import MaybeApply
 
-def get_augmented_model_and_preprocess(experiment_specs, seed):
-    layer_list = []
+def get_augmented_model(experiment_specs, seed):
+    augmentations = []
 
     # Fetch model parameters: base model, input shape, and the specific preprocessing function of the model
     base_model_func, input_shape, preprocess_func = vpd.MODELS_DICT[experiment_specs['base_model']]
@@ -44,6 +44,12 @@ def get_augmented_model_and_preprocess(experiment_specs, seed):
         if (float(layer['rate']) < 1.0):
             new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']), seed=seed)
 
-        layer_list.append(new_layer)
-    
-    return Sequential([InputLayer(input_shape=input_shape)] + layer_list + [base_model, Dense(output_neurons, activation=output_activation)]), preprocess_func
+        augmentations.append(new_layer)
+
+    # Build the model itself
+    inputs = InputLayer(input_shape=input_shape)
+    x = Sequential(augmentations)(inputs)
+    x = preprocess_func(x)
+    x = base_model(x)
+    outputs = Dense(output_neurons, activation=output_activation)
+    return Model(inputs, outputs)

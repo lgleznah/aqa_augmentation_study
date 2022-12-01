@@ -11,17 +11,16 @@ import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
 
-def image_parser_generator(input_shape, preprocess_function):
+def image_parser_generator(input_shape):
     def parse_image(filename, label):
         image = tf.io.read_file(filename)
         image = tf.io.decode_jpeg(image, channels=3)
-        image = tf.image.convert_image_dtype(image, tf.float32)
         image = tf.image.resize(image, input_shape)
-        return preprocess_function(image), label
+        return image, label
     
     return parse_image
 
-def generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocessing_function, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
+def generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
     
     # Fetch paths from the enviroment required for loading AVA
     images_folder = os.environ[dataset_specs[1]]
@@ -42,7 +41,7 @@ def generate_dataset_with_splits(dataset_specs, label_columns, output_format, pr
         return train_labels, val_labels, test_labels
 
     # Generate datasets
-    image_parser = image_parser_generator(input_shape[:2], preprocessing_function)
+    image_parser = image_parser_generator(input_shape[:2])
     train_dataset = tf.data.Dataset.from_tensor_slices((train_image_paths, train_labels)).shuffle(1024, seed=random_seed).map(image_parser).batch(batch_size).prefetch(-1)
     val_dataset = tf.data.Dataset.from_tensor_slices((val_image_paths, val_labels)).map(image_parser).batch(batch_size).prefetch(-1)
     test_dataset = tf.data.Dataset.from_tensor_slices((test_image_paths, test_labels)).map(image_parser).batch(batch_size).prefetch(-1)
