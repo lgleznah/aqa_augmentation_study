@@ -10,9 +10,6 @@ exps:
         rate: 0.1
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_20
     base_model: mobilenet
@@ -23,9 +20,6 @@ exps:
         rate: 0.2
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_30
     base_model: mobilenet
@@ -36,9 +30,6 @@ exps:
         rate: 0.3
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_40
     base_model: mobilenet
@@ -49,9 +40,6 @@ exps:
         rate: 0.4
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_50
     base_model: mobilenet
@@ -62,9 +50,6 @@ exps:
         rate: 0.5
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_60
     base_model: mobilenet
@@ -75,9 +60,6 @@ exps:
         rate: 0.6
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_70
     base_model: mobilenet
@@ -88,9 +70,6 @@ exps:
         rate: 0.7
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_80
     base_model: mobilenet
@@ -101,9 +80,6 @@ exps:
         rate: 0.8
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_90
     base_model: mobilenet
@@ -114,9 +90,6 @@ exps:
         rate: 0.9
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: brightness_100
     base_model: mobilenet
@@ -127,9 +100,6 @@ exps:
         rate: 1.0
         args:
           - 0.75: float
-        kwargs:
-          value_range:
-            (-1,1): tuple
 
   - name: contrast_10
     base_model: mobilenet
