@@ -1,2 +1,3 @@
 __pycache__/
 augmentation-*/
+*.ipynb_checkpoints*
