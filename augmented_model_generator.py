@@ -2,6 +2,7 @@ import valid_parameters_dicts as vpd
 
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, InputLayer
+from tensorflow.keras import Input
 
 from keras_cv.layers.preprocessing import MaybeApply
 
@@ -47,9 +48,9 @@ def get_augmented_model(experiment_specs, seed):
         augmentations.append(new_layer)
 
     # Build the model itself
-    inputs = InputLayer(input_shape=input_shape)
-    x = Sequential(augmentations)(inputs)
-    x = preprocess_func(x)
-    x = base_model(x)
-    outputs = Dense(output_neurons, activation=output_activation)
+    inputs = Input(shape=input_shape)
+    augmented_inputs = Sequential(augmentations)(inputs)
+    preprocessed_input = preprocess_func(augmented_inputs)
+    features = base_model(preprocessed_input)
+    outputs = Dense(output_neurons, activation=output_activation)(features)
     return Model(inputs, outputs)
