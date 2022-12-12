@@ -4,7 +4,7 @@ import warnings
 from losses import earth_mover_loss
 
 from experiment_parser import parse_experiment_file
-from augmented_model_generator import get_augmented_model_and_preprocess
+from augmented_model_generator import get_augmented_model
 from dataset_generator import generate_dataset_with_splits
 
 import valid_parameters_dicts as vpd
@@ -140,6 +140,9 @@ def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name
             
 ######################################################################################################################################
 def main():
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
     experiment_index = int(sys.argv[1])
     experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
 
@@ -151,15 +154,12 @@ def main():
 
     predictions_dir = f'./augmentation-preds/{os.path.splitext(os.path.basename(experiment_file))[0]}'
 
-    # Generate test dataset
-    _, preprocess_func = get_augmented_model_and_preprocess(exp, seed)
-
     output_format = exp['output_format']
     batch_size = exp['batch_size']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, preprocess_func, input_shape, batch_size, labels_only=True, random_seed=seed)
+    _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, labels_only=True, random_seed=seed)
         
     predictions = np.load(os.path.join(predictions_dir, f"{exp['name']}_predictions.npy"))
     groundtruth = test_scores
