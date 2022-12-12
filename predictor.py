@@ -14,16 +14,25 @@ import numpy as np
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-if __name__ == '__main__':
+def main():
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
     experiment_index = int(sys.argv[1])
     experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
+    ignore_completed = sys.argv[3].lower() == 'true'
 
     # Parse specified experiment file
     experiment_dict = parse_experiment_file(experiment_file)
 
     exp = experiment_dict['exps'][experiment_index]
     seed = experiment_dict['seed']
+
+    # Ignore inference if predictions were already made
+    predictions_dir = f'./augmentation-preds/{os.path.splitext(os.path.basename(experiment_file))[0]}'
+    if os.path.exists(os.path.join(predictions_dir,f"{exp['name']}_predictions.npy")) and ignore_completed:
+        print('Experiment already exists! Exiting...')
+        return
 
     # Generate model preprocessing function
     model_with_augmentation = get_augmented_model(exp, seed)
@@ -45,8 +54,10 @@ if __name__ == '__main__':
     predictions = model_with_augmentation.predict(test_dataset)
 
     # Save predictions for further analysis
-    predictions_dir = f'./augmentation-preds/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     if not os.path.exists(predictions_dir):
         os.mkdir(predictions_dir)
 
     np.save(os.path.join(predictions_dir, f"{exp['name']}_predictions.npy"), predictions)
+
+if __name__ == '__main__':
+    main()
