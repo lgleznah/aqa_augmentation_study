@@ -16,7 +16,8 @@ def main():
         - Nothing. The plot itself is saved on figures/{experiment_group}/plot_{metric_name}
     '''
 
-    experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
+    #experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
+    experiment_names = ['brightness', 'flip', 'rotation', 'translation', 'zoom']
     metric_lines = {'balanced_accuracy': 4, 'accuracy': 5, 'Mean_EMD': 6, 'MSE': 7}
 
     # Parse command-line arguments
