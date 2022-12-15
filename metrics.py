@@ -1,24 +1,20 @@
 import os
 import warnings
+import json
 
 from losses import earth_mover_loss
 
 from experiment_parser import parse_experiment_file
-from augmented_model_generator import get_augmented_model
 from dataset_generator import generate_dataset_with_splits
 
 import valid_parameters_dicts as vpd
 
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import tensorflow as tf
 import sys
 
-from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_squared_error, mean_absolute_error, confusion_matrix
+from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_squared_error
 from sklearn.preprocessing import OneHotEncoder
-from scipy.stats import rankdata
 from scipy.stats import entropy
 
 def bal_accuracy_thirds(ground, pred, model_name, results_dir):
@@ -29,6 +25,7 @@ def bal_accuracy_thirds(ground, pred, model_name, results_dir):
 
     Prints the results in a file called model_name, located in the directory specified by the environment variable "AQA_results"
     """
+    metrics_dict = {}
     ground_terciles = np.percentile(ground, [i*100/3 for i in range(1,4)])
     
     index_bad = np.argwhere(ground < ground_terciles[0])
@@ -42,12 +39,11 @@ def bal_accuracy_thirds(ground, pred, model_name, results_dir):
     bal_acc_normal = balanced_accuracy_score(ground[index_normal] > 0.5, pred[index_normal] > 0.5)
     bal_acc_good = balanced_accuracy_score(ground[index_good] > 0.5, pred[index_good]> 0.5)
     
-    with open(os.path.join(results_dir, f"{model_name}_results.txt"), 'a') as f:
-        print(f'Balanced accuracy results by ground-truth quality terciles: ', file=f)
-        print(f'Balanced accuracy, 1st tercile: {bal_acc_bad}', file=f)
-        print(f'Balanced accuracy, 2nd tercile: {bal_acc_normal}', file=f)
-        print(f'Balanced accuracy, 3rd tercile: {bal_acc_good}', file=f)
-        print(f"\n{'#'*80}\n", file=f)
+    metrics_dict['first_tercile_balanced_accuracy'] = bal_acc_bad
+    metrics_dict['second_tercile_balanced_accuracy'] = bal_acc_normal
+    metrics_dict['third_tercile_balanced_accuracy'] = bal_acc_good
+
+    return metrics_dict
 
 def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
     """
@@ -58,6 +54,8 @@ def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_
     
     Assumes both predictions and ground-truths to be normalized vote distributions, from 1 to 10
     """
+    metrics_dict = {}
+
     pred_means = np.sum(pred * np.arange(0.1,1.1,0.1), axis=1) / np.sum(pred, axis=1)
     ground_means = np.sum(ground * np.arange(0.1,1.1,0.1), axis=1) / np.sum(ground, axis=1)
                 
@@ -71,23 +69,21 @@ def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_
     accuracy_maxrating = accuracy_score(np.argmax(ground, axis=1), np.argmax(pred, axis=1))
     bal_accuracy_meanbin = balanced_accuracy_score(np.floor(ground_means), np.floor(pred_means))
     accuracy_meanbin = accuracy_score(np.floor(ground_means), np.floor(pred_means))
+
+    metrics_dict['binary_balanced_accuracy'] = bal_accuracy
+    metrics_dict['binary_accuracy'] = accuracy
+    metrics_dict['bal_accuracy_maxrating'] = bal_accuracy_maxrating
+    metrics_dict['accuracy_maxrating'] = accuracy_maxrating
+    metrics_dict['bal_accuracy_meanbin'] = bal_accuracy_meanbin
+    metrics_dict['accuracy_meanbin'] = accuracy_meanbin
+    metrics_dict['mean_emd'] = mean_emd
+    metrics_dict['mean_squared_error'] = mse
+    metrics_dict['average_prediction_entropy'] = avg_entropy_pred
+    metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd
     
-    with open(os.path.join(results_dir, f"{model_name}_results.txt"), 'a') as f:
-        print(f"RESULTS W.R.T. {ground_name}: ", file=f)
-        print("Binary balanced accuracy: " + str(bal_accuracy), file=f)
-        print("Binary accuracy: " + str(accuracy), file=f)
-        print("Balanced accuracy for most-frequent rating: " + str(bal_accuracy_maxrating), file=f)
-        print("Accuracy for most-frequent rating: " + str(accuracy_maxrating), file=f)
-        print("Balanced accuracy for mean-score bin: " + str(bal_accuracy_meanbin), file=f)
-        print("Accuracy for mean-score bin: " + str(accuracy_meanbin), file=f)
-        print("Mean EMD distance: " + str(mean_emd), file=f)
-        print("Mean squared error: " + str(mse), file=f)
-        print("Average entropy (predictions): " + str(avg_entropy_pred), file=f)
-        print(f"Average entropy ({ground_name}): " + str(avg_entropy_grnd), file=f)
-        print(f"{bal_accuracy:.4f} & {accuracy:.4f} & {mean_emd:.4f} & {mse:.4f} & {avg_entropy_grnd:.4f} \\\\ \\hline", file=f)
-        print("--------------------------------------------------------", file=f)
-    
-    bal_accuracy_thirds(ground_means, pred_means, model_name, results_dir)
+    balaccs_per_tercile = bal_accuracy_thirds(ground_means, pred_means, model_name, results_dir)
+
+    return metrics_dict | balaccs_per_tercile
     
 def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
     """
@@ -98,6 +94,8 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
     
     Assumes both predictions and ground-truths to be a 2-component probability distribution, in the range (0,1). 
     """
+    metrics_dict = {}
+
     bal_accuracy = balanced_accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
     accuracy = accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
     mse = mean_squared_error(ground, pred)
@@ -110,18 +108,16 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
         bal_accuracy = balanced_accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
         accuracy = accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
         mse = mean_squared_error(ground, pred)
+
+    metrics_dict['binary_balanced_accuracy'] = bal_accuracy
+    metrics_dict['binary_accuracy'] = accuracy
+    metrics_dict['mean_squared_error'] = mse
+    metrics_dict['average_prediction_entropy'] = avg_entropy_pred
+    metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd 
         
-    with open(os.path.join(results_dir, f"{model_name}_results.txt"), 'a') as f:
-        print(f"RESULTS W.R.T. {ground_name}: ", file=f)
-        print("Balanced accuracy: " + str(bal_accuracy), file=f)
-        print("Accuracy: " + str(accuracy), file=f)
-        print("Mean squared error: " + str(mse), file=f)
-        print("Average entropy (predictions): " + str(avg_entropy_pred), file=f)
-        print(f"Average entropy ({ground_name}): " + str(avg_entropy_grnd), file=f)
-        print(f"{bal_accuracy:.4f} & {accuracy:.4f} & {mse:.4f} & {avg_entropy_grnd:.4f} \\\\ \\hline", file=f)
-        print("--------------------------------------------------------", file=f)
-        
-    bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
+    balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
+
+    return metrics_dict | balaccs_per_tercile
 
 def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
     """
@@ -132,19 +128,19 @@ def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name
     
     Assumes both predictions and ground-truths to be a 2-component probability distribution, in the range (0,1). 
     """
+    metrics_dict = {}
+
     sparse_predictions = np.argmax(pred, axis=1)
     onehot_groundtruth = OneHotEncoder().fit_transform(list(zip(ground))).toarray()
     bal_accuracy = balanced_accuracy_score(ground, sparse_predictions)
     accuracy = accuracy_score(ground, sparse_predictions)
     mse = mean_squared_error(onehot_groundtruth, pred)
+
+    metrics_dict['binary_balanced_accuracy'] = bal_accuracy
+    metrics_dict['binary_accuracy'] = accuracy
+    metrics_dict['mean_squared_error'] = mse
         
-    with open(os.path.join(results_dir, f"{model_name}_results.txt"), 'a') as f:
-        print(f"RESULTS W.R.T. {ground_name}: ", file=f)
-        print("Balanced accuracy: " + str(bal_accuracy), file=f)
-        print("Accuracy: " + str(accuracy), file=f)
-        print("Mean squared error: " + str(mse), file=f)
-        print(f"{bal_accuracy:.4f} & {accuracy:.4f} & {mse:.4f} \\\\ \\hline", file=f)
-        print("--------------------------------------------------------", file=f)
+    return metrics_dict
             
 ######################################################################################################################################
 def main():
@@ -180,23 +176,22 @@ def main():
     # Each form of ground-truth (distribution, binary weights/classes) requires
     # a different way of obtaining metrics.
               
-    warnings.filterwarnings("ignore", category=UserWarning)
-
-    # Reset results file
-    with open(os.path.join(results_dir, f"{exp['name']}_results.txt"), 'w') as f:
-        print(f"\n{'#'*80}\n", file=f)
+    # warnings.filterwarnings("ignore", category=UserWarning)
     
     # Distribution-like ground-truths
     if (output_format == 'distribution'):
-        get_distribution_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_distribution_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
 
     # Binary-like ground-truths
     if (output_format == 'weights'):
-        get_binary_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_binary_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
 
     # Ten-class ground-truths
     if (output_format == 'tenclass'):
-        get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+
+    with open(os.path.join(results_dir, f"{exp['name']}_results.json"), 'w') as f:
+        json.dump(metrics, f)
 
 if __name__ == '__main__':
     main()
