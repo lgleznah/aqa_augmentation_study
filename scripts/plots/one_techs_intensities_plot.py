@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import os
+import json
 import sys
 
 def main():
@@ -19,14 +20,12 @@ def main():
     '''
 
     experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
-    metric_lines = {'balanced_accuracy': 4, 'accuracy': 5, 'Mean_EMD': 6, 'MSE': 7}
     flip_values = ['horizontal', 'vertical', 'both']
 
     # Parse command-line arguments
     experiment_group = sys.argv[1]
     metric_name = sys.argv[2]
     baseline_name = sys.argv[3]
-    metric_line = metric_lines[metric_name]
     rates = [ int(x) for x in sys.argv[4:] ]
 
     # Create directory in which to save plot (if it does not exist)
@@ -40,9 +39,9 @@ def main():
         metric_values = []
         if (exp != 'flip'):
             for rate in rates:
-                with open(os.path.join('augmentation-results', experiment_group, f'{exp}_{rate}_results.txt'), 'r') as f:
-                    exp_results = f.readlines()
-                    metric_values.append(float(exp_results[metric_line].split(':')[1][1:]))
+                with open(os.path.join('augmentation-results', experiment_group, f'{exp}_{rate}_results.json'), 'r') as f:
+                    exp_results = json.load(f)
+                    metric_values.append(exp_results[metric_name])
             
             ax1.set_xlabel("Augmentation intensity")
             ax1.set_ylabel(metric_name.replace("_", " ").capitalize())
@@ -50,18 +49,18 @@ def main():
 
         else:
             for flip in flip_values:
-                with open(os.path.join('augmentation-results', experiment_group, f'{exp}_{flip}_results.txt'), 'r') as f:
-                    exp_results = f.readlines()
-                    metric_values.append(float(exp_results[metric_line].split(':')[1][1:]))
+                with open(os.path.join('augmentation-results', experiment_group, f'{exp}_{flip}_results.json'), 'r') as f:
+                    exp_results = json.load(f)
+                    metric_values.append(exp_results[metric_name])
 
             ax2.set_xlabel("Flip type")
             ax2.yaxis.set_tick_params(labelbottom=True)
             ax2.bar(flip_values, metric_values)
 
     # Fetch baseline result, and plot it as a horizontal line, on both figures
-    with open(os.path.join('augmentation-results', baseline_name, 'baseline_results.txt'), 'r') as f:
-        baseline_results = f.readlines()
-        baseline_metric = float(baseline_results[metric_line].split(':')[1][1:])
+    with open(os.path.join('augmentation-results', baseline_name, 'baseline_results.json'), 'r') as f:
+        baseline_results = json.load(f)
+        baseline_metric = baseline_results[metric_name]
 
     ax1.axhline(y = baseline_metric, color = 'g', linestyle = '--', label = 'Baseline')
     ax2.axhline(y = baseline_metric, color = 'g', linestyle = '--', label = 'Baseline')
