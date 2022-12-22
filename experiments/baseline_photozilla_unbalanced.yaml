@@ -1,0 +1,7 @@
+seed: 1234
+dataset: photozilla-unbalanced
+exps:
+  - name: baseline
+    base_model: mobilenet
+    output_format: tenclass
+    batch_size: 128
