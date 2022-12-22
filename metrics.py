@@ -67,7 +67,7 @@ def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_
     avg_entropy_grnd = np.mean([entropy(g, base=2) for g in np.vstack((1-ground_means,ground_means)).T])
     bal_accuracy_maxrating = balanced_accuracy_score(np.argmax(ground, axis=1), np.argmax(pred, axis=1))
     accuracy_maxrating = accuracy_score(np.argmax(ground, axis=1), np.argmax(pred, axis=1))
-    bal_accuracy_meanbin = balanced_accuracy_score(np.floor(ground_means), np.floor(pred_means))
+    bal_accuracy_meanbin = balanced_accuracy_score(np.floor(ground_means * 9 + 1), np.floor(pred_means * 9 + 1))
     accuracy_meanbin = accuracy_score(np.floor(ground_means), np.floor(pred_means))
 
     metrics_dict['binary_balanced_accuracy'] = bal_accuracy
@@ -83,7 +83,7 @@ def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_
     
     balaccs_per_tercile = bal_accuracy_thirds(ground_means, pred_means, model_name, results_dir)
 
-    return metrics_dict | balaccs_per_tercile
+    return {**metrics_dict, **balaccs_per_tercile}
     
 def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
     """
@@ -117,7 +117,7 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
         
     balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
 
-    return metrics_dict | balaccs_per_tercile
+    return {**metrics_dict, **balaccs_per_tercile}
 
 def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
     """
