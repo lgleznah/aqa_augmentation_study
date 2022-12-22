@@ -53,5 +53,6 @@ TRANSFORMERS_DICT = {
 # paths to their CSV description file and the base path to their images, respectively
 DATASETS_DICT = {
     'ava': ('AVA_info_folder', 'AVA_images_folder'),
-    'photozilla': ('Photozilla_info_folder', 'Photozilla_images_folder')
+    'photozilla': ('Photozilla_info_folder', 'Photozilla_images_folder'),
+    'photozilla-unbalanced': ('Photozilla_unbalanced_info_folder', 'Photozilla_unbalanced_images_folder')
 }
