@@ -31,20 +31,20 @@ def main():
     if not os.path.exists(plot_dir):
         os.mkdir(plot_dir)
 
+    # Fetch baseline result, and plot it as a horizontal line
+    with open(os.path.join('augmentation-results', baseline_name, 'baseline_results.json'), 'r') as f:
+        baseline_results = json.load(f)
+        baseline_metric =baseline_results[metric_name]
+
     # Plot results for all augmentation techniques and given rates
     for exp in experiment_names:
-        metric_values = []
+        metric_values = [baseline_metric]
         for rate in rates:
             with open(os.path.join('augmentation-results', experiment_group, f'{exp}_{rate}_results.json'), 'r') as f:
                 exp_results = json.load(f)
                 metric_values.append(exp_results[metric_name])
         
-        plt.plot(rates, metric_values, label=exp.capitalize())
-    
-    # Fetch baseline result, and plot it as a horizontal line
-    with open(os.path.join('augmentation-results', baseline_name, 'baseline_results.json'), 'r') as f:
-        baseline_results = json.load(f)
-        baseline_metric =baseline_results[metric_name]
+        plt.plot([0] + rates, metric_values, label=exp.capitalize())
 
     plt.axhline(y = baseline_metric, color = 'g', linestyle = '--', label = 'Baseline')
 
@@ -58,8 +58,8 @@ def main():
     if metric_name == 'balanced_accuracy':
         plt.axhline(y = 0.5, color = 'r', linestyle = 'dotted', label = 'ZeroR performance', linewidth = 1.5)
 
-    plt.xticks([10,20,30,40,50,60,70,80,90,100])
-    plt.xlim(10, 100)
+    plt.xticks([0,10,20,30,40,50,60,70,80,90,100])
+    plt.xlim(0, 100)
 
     plt.ylim(0,1)
     plt.legend()
