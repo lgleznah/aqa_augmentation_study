@@ -17,11 +17,10 @@ def main():
         - Nothing. The plot itself is saved on figures/{experiment_group}/plot_{metric_name}
     '''
 
-    #experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
-    experiment_names = ['brightness', 'flip', 'rotation', 'translation', 'zoom']
+    experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
     metrics_per_type = {
         'distribution': ['binary_balanced_accuracy', 'binary_accuracy', 'bal_accuracy_maxrating', 'accuracy_maxrating', 'bal_accuracy_meanbin', 'accuracy_meanbin', 'mean_emd', 'mean_squared_error', 'average_prediction_entropy', 'average_groundtruth_entropy'],
-        'tenclass': ['binary_balanced_accuracy', 'balanced_accuracy', 'mean_squared_error']
+        'tenclass': ['binary_balanced_accuracy', 'binary_accuracy', 'mean_squared_error']
     }
 
     # Parse command-line arguments
