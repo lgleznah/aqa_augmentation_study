@@ -17,7 +17,7 @@ from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_square
 from sklearn.preprocessing import OneHotEncoder
 from scipy.stats import entropy
 
-def bal_accuracy_thirds(ground, pred, model_name, results_dir):
+def bal_accuracy_thirds(ground, pred):
     """
     Compute balanced accuracy of (pred) w.r.t. (ground) on each tercile of the ground truth (ground)
     
@@ -45,7 +45,7 @@ def bal_accuracy_thirds(ground, pred, model_name, results_dir):
 
     return metrics_dict
 
-def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
+def get_distribution_metrics_and_plot(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -81,11 +81,11 @@ def get_distribution_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_
     metrics_dict['average_prediction_entropy'] = avg_entropy_pred
     metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd
     
-    balaccs_per_tercile = bal_accuracy_thirds(ground_means, pred_means, model_name, results_dir)
+    balaccs_per_tercile = bal_accuracy_thirds(ground_means, pred_means)
 
     return {**metrics_dict, **balaccs_per_tercile}
     
-def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
+def get_binary_metrics_and_plot(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -117,11 +117,11 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
     metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd
     metrics_dict['confusion_matrix'] = confmat
         
-    balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
+    balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1])
 
     return {**metrics_dict, **balaccs_per_tercile}
 
-def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, model_name, results_dir):
+def get_tenclass_metrics_and_plot(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -183,15 +183,15 @@ def main():
                   
     # Distribution-like ground-truths
     if (output_format == 'distribution'):
-        metrics = get_distribution_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_distribution_metrics_and_plot(groundtruth, predictions)
 
     # Binary-like ground-truths
     if (output_format == 'weights'):
-        metrics = get_binary_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_binary_metrics_and_plot(groundtruth, predictions)
 
     # Ten-class ground-truths
     if (output_format == 'tenclass'):
-        metrics = get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        metrics = get_tenclass_metrics_and_plot(groundtruth, predictions)
         confmat_dir = os.path.join('figures', os.path.splitext(os.path.basename(experiment_file))[0], 'confmats')
         if not os.path.exists(confmat_dir):
             os.makedirs(confmat_dir, exist_ok=True)
