@@ -1,6 +1,6 @@
 from experiment_parser import parse_experiment_file
 from augmented_model_generator import get_augmented_model
-from dataset_generator import generate_dataset_with_splits
+from dataset_generator import generate_dataset_with_splits, get_class_weights
 
 import valid_parameters_dicts as vpd
 
@@ -12,16 +12,20 @@ import random
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 
-def set_seed(seed: int = 42) -> None:
+def set_seed(seed: int = 42, contrast_experiment: bool = False) -> None:
     random.seed(seed)
     np.random.seed(seed)
     tf.random.set_seed(seed)
     tf.experimental.numpy.random.seed(seed)
     # When running on the CuDNN backend, two further options must be set
-    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
-    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    # As of TF 2.10, there is no deterministic implementation for RandomContrast, so avoid setting
+    # these variables in this case.
+
+    if not contrast_experiment:
+        os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+        os.environ['TF_DETERMINISTIC_OPS'] = '1'
     # Set a fixed value for the hash seed
     os.environ["PYTHONHASHSEED"] = str(seed)
 
@@ -43,7 +47,8 @@ def main():
 
     exp = experiment_dict['exps'][experiment_index]
     seed = experiment_dict['seed']
-    set_seed(seed)
+    has_contrast_exp = 'contrast' in [layer['layer'] for layer in exp['layers']]
+    set_seed(seed, has_contrast_exp)
 
     # Ignore experiment if it already exists
     histories_dir = f'./augmentation-hist/{os.path.splitext(os.path.basename(experiment_file))[0]}'
@@ -66,7 +71,8 @@ def main():
     print(model_with_augmentation.summary())
 
     _, _, loss_function, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
-    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=1e-05, decay=1e-8))
+    lr = experiment_dict['lr']
+    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=lr, decay=1e-8))
 
     # Create model checkpoint
     checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
@@ -79,8 +85,22 @@ def main():
     if not os.path.exists(histories_dir):
         os.mkdir(histories_dir)
 
+    # Set callbacks
+    callbacks = [best_checkpoint]
+
+    if experiment_dict['use_plateau']:
+        plateau = ReduceLROnPlateau(patience=5, factor=0.5)
+        callbacks.append(plateau)
+
+    # Load class weights
+    weights = None
+    if experiment_dict['weight_classes']:
+        info_csv_path = os.environ[dataset_specs[0]]
+        weights = get_class_weights(info_csv_path, label_columns)
+
     # Fit model!
-    history = model_with_augmentation.fit(train_dataset, validation_data=val_dataset, epochs=20, callbacks=[best_checkpoint])
+    epochs = experiment_dict['epochs']
+    history = model_with_augmentation.fit(train_dataset, validation_data=val_dataset, epochs=epochs, callbacks=callbacks, class_weight=weights)
 
     # Save history file
     with open(os.path.join(histories_dir, f"{exp['name']}_history.json"), 'w') as f:
