@@ -16,7 +16,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 
 def main():
 
-    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    #os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
     experiment_index = int(sys.argv[1])
     experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
