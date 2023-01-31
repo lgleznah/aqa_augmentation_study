@@ -20,6 +20,16 @@ def image_parser_generator(input_shape):
     
     return parse_image
 
+def get_class_weights(info_folder, label_column):
+    info_df = pd.read_csv(f'{info_folder}/info.csv', index_col=0)
+
+    counts = info_df.iloc[:,label_column].value_counts().to_dict()
+    total_examples = len(info_df)
+
+    scaled_counts = {}
+    for label, count in counts.items():
+        scaled_counts[label] = (1 / count) * (total_examples / 2)
+
 def generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split=0.08, val_split=0.2, random_seed=1000, labels_only=False):
     
     # Fetch paths from the enviroment required for loading AVA
@@ -33,9 +43,12 @@ def generate_dataset_with_splits(dataset_specs, label_columns, output_format, in
     # Fetch initial labels (original ratings) from the DataFrame, and transform them
     labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(info_csv.iloc[:,label_columns]))
 
-    # Perform training, validation and testing splits
-    train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed)
-    train_image_paths, val_image_paths, train_labels, val_labels = train_test_split(train_image_paths, train_labels, test_size = val_split, random_state = random_seed)
+    # Perform training, validation and testing splits, Stratify only for tenclass problems
+    stratify_train_test = None if output_format != 'tenclass' else labels
+    train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed, stratify=stratify_train_test)
+
+    stratify_train_val = None if output_format != 'tenclass' else train_labels
+    train_image_paths, val_image_paths, train_labels, val_labels = train_test_split(train_image_paths, train_labels, test_size = val_split, random_state = random_seed, stratify=stratify_train_val)
 
     if (labels_only):
         return train_labels, val_labels, test_labels
