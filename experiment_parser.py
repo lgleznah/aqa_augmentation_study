@@ -18,6 +18,10 @@ def parse_experiment_file(filename):
             if 'seed' not in experiment_specs or not isinstance(experiment_specs['seed'], int):
                 raise ValueError('Error: The dictionary must contain a top-level key called "seed", with an int as value')
 
+            # Verify that there is also a number of epochs set
+            if 'epochs' not in experiment_specs or not isinstance(experiment_specs['epochs'], int):
+                raise ValueError('Error: The dictionary must contain a top-level key called "epochs", with an int as value')
+
             # The other top-level entry of the dictionary must be a key called 'exps', and a value that is a list
             if 'exps' not in experiment_specs or not isinstance(experiment_specs['exps'], list):
                 raise ValueError('Error: The dictionary must contain a top-level key called "exps", with a list as value')
@@ -25,6 +29,18 @@ def parse_experiment_file(filename):
             # The last top-level entry of the dictionary must be a key called 'dataset', and a value that is a string (defined in vpd.DATASETS_DICTS)
             if 'dataset' not in experiment_specs or not isinstance(experiment_specs['dataset'], str) or experiment_specs['dataset'] not in vpd.DATASETS_DICT:
                 raise ValueError('Error: The dictionary must contain a top-level key called "dataset", with a string as value. The string must be defined in vpd.DATASETS_DICT')
+
+            # Another top-level entry must be a key called "lr", whose value is a float
+            if 'lr' not in experiment_specs or not isinstance(experiment_specs['lr'], float):
+                raise ValueError('Error: The dictionary must contain a top-level key called "lr", with a float as value')
+
+            # Another top-level entry must be a key called "use_plateau", whose value is a boolean
+            if 'use_plateau' not in experiment_specs or not isinstance(experiment_specs['use_plateau'], bool):
+                raise ValueError('Error: The dictionary must contain a top-level key called "use_plateau", with a bool as value')
+
+            # Another top-level entry must be a key called "weight_classes", whose value is a boolean
+            if 'weight_classes' not in experiment_specs or not isinstance(experiment_specs['weight_classes'], bool):
+                raise ValueError('Error: The dictionary must contain a top-level key called "weight_classes", with a bool as value')
 
             # Parse each experiment specification
             for exp in experiment_specs['exps']:
