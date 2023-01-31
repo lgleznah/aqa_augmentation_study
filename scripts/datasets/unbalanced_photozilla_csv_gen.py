@@ -40,10 +40,13 @@ def main():
         'label': list(map(lambda path: labels_dict[path.split(os.sep)[0]], relative_paths))
     }
 
-    # Only keep around 50000 images, for testing
-    df = pd.DataFrame.from_dict(df_dict)
-    df = df.groupby('label', group_keys=True).apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * 50000))).droplevel('label')
-    df.to_csv('info.csv')
+    # Only keep around 10000 images, for testing
+    df = pd.DataFrame.from_dict(df_dict).sample(frac=1, random_state=1)
+    df_grouped = df.groupby('label', group_keys=True)#.apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * 50000))).droplevel('label')
+    df_base = df_grouped.head(10)
+    df_distribution = df_grouped.tail(9000).groupby('label', group_keys=True).apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * 9900))).droplevel('label')
+    df_final = pd.concat([df_base, df_distribution])
+    df_final.to_csv('info.csv')
 
 if __name__ == "__main__":
     main()
