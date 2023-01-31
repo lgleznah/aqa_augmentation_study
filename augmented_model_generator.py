@@ -13,7 +13,7 @@ def get_augmented_model(experiment_specs, seed):
     base_model_func, input_shape, preprocess_func = vpd.MODELS_DICT[experiment_specs['base_model']]
 
     # Fetch base model, pre-trained on ImageNet; and compute the number of output neurons
-    base_model = base_model_func(input_shape=input_shape, include_top=False, pooling ="avg", weights='imagenet')
+    base_model = base_model_func(input_shape=input_shape, include_top=False, pooling ="avg", weights=None)
     _, _, _, output_activation, output_neurons = vpd.TRANSFORMERS_DICT[experiment_specs['output_format']]
 
     # Create all augmentation layers
@@ -42,8 +42,7 @@ def get_augmented_model(experiment_specs, seed):
         # If this layer has an augmentation probability between 0 and 1, then wrap
         # the layer with MaybeApply
         new_layer = vpd.LAYERS_DICT[layer['layer']](*layer_args, **layer_kwargs)
-        if (float(layer['rate']) < 1.0):
-            new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']), seed=seed)
+        new_layer = MaybeApply(layer=new_layer, rate=float(layer['rate']), seed=seed)
 
         augmentations.append(new_layer)
 
