@@ -194,7 +194,7 @@ def main():
         metrics = get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
         confmat_dir = os.path.join('figures', os.path.splitext(os.path.basename(experiment_file))[0], 'confmats')
         if not os.path.exists(confmat_dir):
-            os.mkdir(confmat_dir)
+            os.makedirs(confmat_dir, exist_ok=True)
         
         confmat = metrics['confusion_matrix']
         df_cm = pd.DataFrame(confmat, index=[i for i in class_names], columns=[i for i in class_names])
