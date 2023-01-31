@@ -1,5 +1,9 @@
 seed: 1234
 dataset: photozilla-unbalanced
+lr: 1.e-3
+use_plateau: yes
+weight_classes: yes
+epochs: 100
 exps:
   - name: brightness_25
     base_model: mobilenet
