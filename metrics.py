@@ -1,19 +1,19 @@
 import os
-import warnings
 import json
+import sys
 
 from losses import earth_mover_loss
-
 from experiment_parser import parse_experiment_file
 from dataset_generator import generate_dataset_with_splits
 
 import valid_parameters_dicts as vpd
-
 import numpy as np
+import pandas as pd
 import tensorflow as tf
-import sys
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_squared_error
+from sklearn.metrics import balanced_accuracy_score, accuracy_score, mean_squared_error, confusion_matrix
 from sklearn.preprocessing import OneHotEncoder
 from scipy.stats import entropy
 
@@ -99,6 +99,7 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
     bal_accuracy = balanced_accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
     accuracy = accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
     mse = mean_squared_error(ground, pred)
+    confmat = confusion_matrix(ground[:,1] > 0.5, pred[:,1] > 0.5).tolist()
     avg_entropy_pred = np.mean([entropy(p, base=2) for p in pred])
     avg_entropy_grnd = np.mean([entropy(g, base=2) for g in ground])
 
@@ -113,7 +114,8 @@ def get_binary_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name, 
     metrics_dict['binary_accuracy'] = accuracy
     metrics_dict['mean_squared_error'] = mse
     metrics_dict['average_prediction_entropy'] = avg_entropy_pred
-    metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd 
+    metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd
+    metrics_dict['confusion_matrix'] = confmat
         
     balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1], model_name, results_dir)
 
@@ -135,10 +137,12 @@ def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name
     bal_accuracy = balanced_accuracy_score(ground, sparse_predictions)
     accuracy = accuracy_score(ground, sparse_predictions)
     mse = mean_squared_error(onehot_groundtruth, pred)
+    confmat = confusion_matrix(ground, sparse_predictions).tolist()
 
     metrics_dict['binary_balanced_accuracy'] = bal_accuracy
     metrics_dict['binary_accuracy'] = accuracy
     metrics_dict['mean_squared_error'] = mse
+    metrics_dict['confusion_matrix'] = confmat
         
     return metrics_dict
             
@@ -146,6 +150,7 @@ def get_tenclass_metrics_and_plot(ground, pred, ground_name, plot_dir, plot_name
 def main():
 
     os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+    class_names = ['aerial', 'architecture', 'event', 'fashion', 'food', 'nature', 'sports', 'street', 'wedding', 'wildlife']
 
     experiment_index = int(sys.argv[1])
     experiment_file = os.path.join(os.environ['AQA_AUGMENT_EXPERIMENTS_PATH'], f'{sys.argv[2]}.yaml')
@@ -175,9 +180,7 @@ def main():
 
     # Each form of ground-truth (distribution, binary weights/classes) requires
     # a different way of obtaining metrics.
-              
-    # warnings.filterwarnings("ignore", category=UserWarning)
-    
+                  
     # Distribution-like ground-truths
     if (output_format == 'distribution'):
         metrics = get_distribution_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
@@ -189,6 +192,15 @@ def main():
     # Ten-class ground-truths
     if (output_format == 'tenclass'):
         metrics = get_tenclass_metrics_and_plot(groundtruth, predictions, "groundtruth", plot_dir, "against_groundtruth", exp['name'], results_dir)
+        confmat_dir = os.path.join('figures', os.path.splitext(os.path.basename(experiment_file))[0], 'confmats')
+        if not os.path.exists(confmat_dir):
+            os.mkdir(confmat_dir)
+        
+        confmat = metrics['confusion_matrix']
+        df_cm = pd.DataFrame(confmat, index=[i for i in class_names], columns=[i for i in class_names])
+        plt.figure(figsize=(10,7))
+        sns.heatmap(df_cm, annot=True)
+        plt.savefig(os.path.join(confmat_dir, f"{exp['name']}_confmat.svg"))
 
     with open(os.path.join(results_dir, f"{exp['name']}_results.json"), 'w') as f:
         json.dump(metrics, f)
