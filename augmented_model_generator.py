@@ -14,7 +14,7 @@ def get_augmented_model(experiment_specs, seed):
 
     # Fetch base model, pre-trained on ImageNet; and compute the number of output neurons
     base_model = base_model_func(input_shape=input_shape, include_top=False, pooling ="avg", weights=None)
-    _, _, _, output_activation, output_neurons = vpd.TRANSFORMERS_DICT[experiment_specs['output_format']]
+    _, _, _, output_activation, output_neurons, _ = vpd.TRANSFORMERS_DICT[experiment_specs['output_format']]
 
     # Create all augmentation layers
     for layer in experiment_specs['layers']:

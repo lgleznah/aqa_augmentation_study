@@ -40,13 +40,14 @@ MODELS_DICT = {
 
 # Rating transform functions. Each dict entry includes the transfomer function to change the format of the
 # model, the CSV columns to use for each transformation, the loss function to be used with each format, 
-# the activation function of the final layer and the number of output neurons
+# the activation function of the final layer, the number of output neurons, and the monitoring metric
 TRANSFORMERS_DICT = {
-    'distribution': (distribution_transform, slice(1,11), earth_mover_loss, 'softmax', 10),
-    'mean': (mean_transform, slice(1, 11), 'mean_squared_error', 'linear', 1),
-    'binary': (binary_transform, slice(1, 11), 'binary_crossentropy', 'softmax', 1),
-    'weights': (weights_transform, slice(1, 11), 'categorical_crossentropy', 'softmax', 2),
-    'tenclass': (tenclass_transform, 1, 'sparse_categorical_crossentropy', 'softmax', 10)
+    'distribution': (distribution_transform, slice(1,11), earth_mover_loss, 'softmax', 10, earth_mover_loss),
+    'mean': (mean_transform, slice(1, 11), 'mean_squared_error', 'linear', 1, 'mse'),
+    'binary': (binary_transform, slice(1, 11), 'binary_crossentropy', 'sigmoid', 1, 'accuracy'),
+    'ovr-binary': (ovr_binary, 1, 'binary_crossentropy', 'sigmoid', 1, 'accuracy'),
+    'weights': (weights_transform, slice(1, 11), 'categorical_crossentropy', 'softmax', 2, 'categorical_accuracy'),
+    'tenclass': (tenclass_transform, 1, 'sparse_categorical_crossentropy', 'softmax', 10, 'sparse_categorical_accuracy')
 }
 
 # Accepted datasets in the experiment files. Each dict entry specifies the environment variables containing the
@@ -55,5 +56,16 @@ DATASETS_DICT = {
     'ava': ('AVA_info_folder', 'AVA_images_folder'),
     'ava-small': ('AVA_small_info_folder', 'AVA_images_folder'),
     'photozilla': ('Photozilla_info_folder', 'Photozilla_images_folder'),
-    'photozilla-unbalanced': ('Photozilla_unbalanced_info_folder', 'Photozilla_unbalanced_images_folder')
+    'photozilla-unbalanced': ('Photozilla_unbalanced_info_folder', 'Photozilla_unbalanced_images_folder'),
+    'photozilla-ovr-aerial': ('Photozilla_ovr_aerial_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-architecture': ('Photozilla_ovr_architecture_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-event': ('Photozilla_ovr_event_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-fashion': ('Photozilla_ovr_fashion_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-food': ('Photozilla_ovr_food_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-nature': ('Photozilla_ovr_nature_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-sports': ('Photozilla_ovr_sports_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-street': ('Photozilla_ovr_street_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-wedding': ('Photozilla_ovr_wedding_info_folder', 'Photozilla_images_folder'),
+    'photozilla-ovr-wildlife': ('Photozilla_ovr_wildlife_info_folder', 'Photozilla_images_folder'),
+    'ps-ovr-aerial': ('ps_ovr_aerial_info_folder', 'Photozilla_images_folder'),
 }

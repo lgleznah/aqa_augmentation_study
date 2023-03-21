@@ -40,10 +40,12 @@ def main():
     # Generate training, validation and test datasets
     output_format = exp['output_format']
     batch_size = exp['batch_size']
+    test_split = experiment_dict['test_split']
+    val_split = experiment_dict['val_split']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, random_seed = seed)
+    _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed = seed)
 
     checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     model_with_augmentation.load_weights(os.path.join(checkpoints_dir, f"{exp['name']}_bestmodel.h5"))

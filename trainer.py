@@ -62,17 +62,20 @@ def main():
     # Generate training, validation and test datasets
     output_format = exp['output_format']
     batch_size = exp['batch_size']
+    test_split = experiment_dict['test_split']
+    val_split = experiment_dict['val_split']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, random_seed=seed)
+    train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed=seed)
 
     # Show model summary and compile model
     print(model_with_augmentation.summary())
 
-    _, _, loss_function, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
+    _, _, loss_function, _, _, _ = vpd.TRANSFORMERS_DICT[exp['output_format']]
     lr = experiment_dict['lr']
-    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=lr, decay=1e-8))
+    metric = [vpd.TRANSFORMERS_DICT[output_format][5]]
+    model_with_augmentation.compile(loss=loss_function, optimizer=Adam(learning_rate=lr, decay=1e-8), metrics=metric)
 
     # Create model checkpoint
     checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
