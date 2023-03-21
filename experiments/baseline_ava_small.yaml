@@ -3,9 +3,9 @@ dataset: ava-small
 lr: 1.e-3
 use_plateau: yes
 weight_classes: no
-epochs: 100
+epochs: 30
 exps:
   - name: baseline
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128

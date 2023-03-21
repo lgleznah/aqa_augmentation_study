@@ -1,9 +1,13 @@
 seed: 1234
 dataset: ava
+lr: 1.e-3
+use_plateau: yes
+weight_classes: no
+epochs: 100
 exps:
   - name: brightness_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -13,7 +17,7 @@ exps:
 
   - name: brightness_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -23,7 +27,7 @@ exps:
 
   - name: brightness_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -33,7 +37,7 @@ exps:
 
   - name: brightness_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -43,7 +47,7 @@ exps:
 
   - name: brightness_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -53,7 +57,7 @@ exps:
 
   - name: brightness_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -63,7 +67,7 @@ exps:
 
   - name: brightness_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -73,7 +77,7 @@ exps:
 
   - name: brightness_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -83,7 +87,7 @@ exps:
 
   - name: brightness_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -93,7 +97,7 @@ exps:
 
   - name: brightness_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: brightness
@@ -103,7 +107,7 @@ exps:
 
   - name: contrast_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -113,7 +117,7 @@ exps:
 
   - name: contrast_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -123,7 +127,7 @@ exps:
 
   - name: contrast_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -133,7 +137,7 @@ exps:
 
   - name: contrast_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -143,7 +147,7 @@ exps:
 
   - name: contrast_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -153,7 +157,7 @@ exps:
 
   - name: contrast_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -163,7 +167,7 @@ exps:
 
   - name: contrast_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -173,7 +177,7 @@ exps:
 
   - name: contrast_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -183,7 +187,7 @@ exps:
 
   - name: contrast_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -193,7 +197,7 @@ exps:
 
   - name: contrast_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: contrast
@@ -203,7 +207,7 @@ exps:
 
   - name: flip_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -213,7 +217,7 @@ exps:
 
   - name: flip_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -223,7 +227,7 @@ exps:
 
   - name: flip_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -233,7 +237,7 @@ exps:
 
   - name: flip_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -243,7 +247,7 @@ exps:
 
   - name: flip_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -253,7 +257,7 @@ exps:
 
   - name: flip_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -263,7 +267,7 @@ exps:
 
   - name: flip_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -273,7 +277,7 @@ exps:
 
   - name: flip_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -283,7 +287,7 @@ exps:
 
   - name: flip_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -293,7 +297,7 @@ exps:
 
   - name: flip_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: flip
@@ -303,7 +307,7 @@ exps:
 
   - name: rotation_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -318,7 +322,7 @@ exps:
 
   - name: rotation_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -333,7 +337,7 @@ exps:
 
   - name: rotation_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -348,7 +352,7 @@ exps:
 
   - name: rotation_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -363,7 +367,7 @@ exps:
 
   - name: rotation_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -378,7 +382,7 @@ exps:
 
   - name: rotation_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -393,7 +397,7 @@ exps:
 
   - name: rotation_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -408,7 +412,7 @@ exps:
 
   - name: rotation_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -423,7 +427,7 @@ exps:
 
   - name: rotation_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -438,7 +442,7 @@ exps:
 
   - name: rotation_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: rotation
@@ -453,7 +457,7 @@ exps:
 
   - name: translation_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -469,7 +473,7 @@ exps:
 
   - name: translation_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -485,7 +489,7 @@ exps:
 
   - name: translation_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -501,7 +505,7 @@ exps:
 
   - name: translation_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -517,7 +521,7 @@ exps:
 
   - name: translation_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -533,7 +537,7 @@ exps:
 
   - name: translation_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -549,7 +553,7 @@ exps:
 
   - name: translation_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -565,7 +569,7 @@ exps:
 
   - name: translation_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -581,7 +585,7 @@ exps:
 
   - name: translation_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -597,7 +601,7 @@ exps:
 
   - name: translation_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: translation
@@ -613,7 +617,7 @@ exps:
 
   - name: zoom_10
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -630,7 +634,7 @@ exps:
 
   - name: zoom_20
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -647,7 +651,7 @@ exps:
 
   - name: zoom_30
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -664,7 +668,7 @@ exps:
 
   - name: zoom_40
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -681,7 +685,7 @@ exps:
 
   - name: zoom_50
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -698,7 +702,7 @@ exps:
 
   - name: zoom_60
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -715,7 +719,7 @@ exps:
 
   - name: zoom_70
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -732,7 +736,7 @@ exps:
 
   - name: zoom_80
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -749,7 +753,7 @@ exps:
 
   - name: zoom_90
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
@@ -766,7 +770,7 @@ exps:
 
   - name: zoom_100
     base_model: mobilenet
-    output_format: distribution
+    output_format: binary
     batch_size: 128
     layers:
       - layer: zoom
