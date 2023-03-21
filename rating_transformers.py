@@ -16,7 +16,7 @@ def mean_transform(scores):
 def binary_transform(scores):
     mean_scores = mean_transform(scores)
     classes = np.array(mean_scores >= 0.5).astype(int)
-    return np.vstack(([1-classes],[classes])).T
+    return classes
 
 # This function transforms the rating distribution to a Bernoulli distribution,
 # using the result of mean_transform to generate [1-mean_transform, mean_transform]
@@ -27,4 +27,8 @@ def weights_transform(scores):
 # Dummy function for Photozilla labels transformer function. The labels are already
 # OK as they are in the CSV
 def tenclass_transform(label):
+    return label
+
+# Dummy function for Photozilla OVR transformer function. Just fetch the label
+def ovr_binary(label):
     return label
