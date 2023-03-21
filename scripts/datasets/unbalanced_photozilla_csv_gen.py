@@ -16,6 +16,10 @@ labels_dict = {
 }
 
 def main():
+    target_images = 10000
+    base_images_per_group = 100
+    sample_target = (target_images - base_images_per_group * 10)
+
     ava_info_folder = os.environ['AVA_info_folder']
     info_csv = pd.read_csv(f'{ava_info_folder}/info.csv', index_col=0)
 
@@ -40,11 +44,11 @@ def main():
         'label': list(map(lambda path: labels_dict[path.split(os.sep)[0]], relative_paths))
     }
 
-    # Only keep around 10000 images, for testing
+    # Sample images from the dataset
     df = pd.DataFrame.from_dict(df_dict).sample(frac=1, random_state=1)
     df_grouped = df.groupby('label', group_keys=True)#.apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * 50000))).droplevel('label')
-    df_base = df_grouped.head(10)
-    df_distribution = df_grouped.tail(9000).groupby('label', group_keys=True).apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * 9900))).droplevel('label')
+    df_base = df_grouped.head(base_images_per_group)
+    df_distribution = df_grouped.tail(9000).groupby('label', group_keys=True).apply(lambda x : x.sample(int(maxvote_counts_normalized[x.name] * sample_target))).droplevel('label')
     df_final = pd.concat([df_base, df_distribution])
     df_final.to_csv('info.csv')
 
