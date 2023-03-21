@@ -9,7 +9,7 @@ def main():
 
     Command-line arguments:
         - 1st argument: the name of the experiment group to plot
-        - 2nd argument: the name of the metric to plot
+        - 2nd argument: the output format of the experiment group
         - 3rd argument: the name of the corresponding, unaugmented baseline
         - 4th argument and so on: the specific rates to plot
 
@@ -20,7 +20,8 @@ def main():
     experiment_names = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
     metrics_per_type = {
         'distribution': ['binary_balanced_accuracy', 'binary_accuracy', 'bal_accuracy_maxrating', 'accuracy_maxrating', 'bal_accuracy_meanbin', 'accuracy_meanbin', 'mean_emd', 'mean_squared_error', 'average_prediction_entropy', 'average_groundtruth_entropy'],
-        'tenclass': ['binary_balanced_accuracy', 'binary_accuracy', 'mean_squared_error']
+        'tenclass': ['binary_balanced_accuracy', 'binary_accuracy', 'mean_squared_error'],
+        'binary': ['binary_balanced_accuracy', 'binary_accuracy', 'mean_squared_error']
     }
 
     # Parse command-line arguments
