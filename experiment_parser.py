@@ -42,6 +42,20 @@ def parse_experiment_file(filename):
             if 'weight_classes' not in experiment_specs or not isinstance(experiment_specs['weight_classes'], bool):
                 raise ValueError('Error: The dictionary must contain a top-level key called "weight_classes", with a bool as value')
 
+            # Optional argument: validation split size. Must be a float between 0 and 1
+            if 'val_split' not in experiment_specs:
+                experiment_specs.update({'val_split': 0.2})
+
+            if 'val_split' in experiment_specs and (not isinstance(experiment_specs['val_split'], float) or (experiment_specs['val_split'] < 0 or experiment_specs['val_split'] > 1)):
+                raise ValueError('Error: val_split must be a float between 0 and 1')
+            
+            # Optional argument: test split size. Must be a float between 0 and 1
+            if 'test_split' not in experiment_specs:
+                experiment_specs.update({'test_split': 0.08})
+
+            if 'test_split' in experiment_specs and (not isinstance(experiment_specs['test_split'], float) or (experiment_specs['test_split'] < 0 or experiment_specs['test_split'] > 1)):
+                raise ValueError('Error: test_split must be a float between 0 and 1')
+
             # Parse each experiment specification
             for exp in experiment_specs['exps']:
                 # Each element in exps must have a 'name' (string) and an optional list of 'layers' (list)
