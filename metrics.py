@@ -85,7 +85,7 @@ def get_distribution_metrics_and_plot(ground, pred):
 
     return {**metrics_dict, **balaccs_per_tercile}
     
-def get_binary_metrics_and_plot(ground, pred):
+def get_weighed_binary_metrics_and_plot(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -120,6 +120,42 @@ def get_binary_metrics_and_plot(ground, pred):
     balaccs_per_tercile = bal_accuracy_thirds(ground[:,1], pred[:,1])
 
     return {**metrics_dict, **balaccs_per_tercile}
+
+def get_binary_metrics_and_plot(ground, pred):
+    """
+    Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
+    WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
+    
+    After printing such metrics, plot predictions and ground-truth together.
+    
+    Assumes both predictions and ground-truths to be a 2-component probability distribution, in the range (0,1). 
+    """
+    metrics_dict = {}
+    pred = pred.squeeze()
+
+    bal_accuracy = balanced_accuracy_score(ground > 0.5, pred > 0.5)
+    accuracy = accuracy_score(ground > 0.5, pred > 0.5)
+    mse = mean_squared_error(ground, pred)
+    confmat = confusion_matrix(ground > 0.5, pred > 0.5).tolist()
+    avg_entropy_pred = np.mean([entropy([p, 1-p], base=2) for p in pred])
+    avg_entropy_grnd = np.mean([entropy([g, 1-g], base=2) for g in ground])
+
+    # Component swapping fix
+    if (accuracy < 0.5):
+        pred = 1 - pred
+        bal_accuracy = balanced_accuracy_score(ground > 0.5, pred > 0.5)
+        accuracy = accuracy_score(ground > 0.5, pred > 0.5)
+        mse = mean_squared_error(ground, pred)
+
+    metrics_dict['binary_balanced_accuracy'] = bal_accuracy
+    metrics_dict['binary_accuracy'] = accuracy
+    metrics_dict['mean_squared_error'] = mse
+    metrics_dict['average_prediction_entropy'] = avg_entropy_pred
+    metrics_dict['average_groundtruth_entropy'] = avg_entropy_grnd
+    metrics_dict['confusion_matrix'] = confmat
+
+    return metrics_dict
+
 
 def get_tenclass_metrics_and_plot(ground, pred):
     """
@@ -165,15 +201,16 @@ def main():
 
     output_format = exp['output_format']
     batch_size = exp['batch_size']
+    test_split = experiment_dict['test_split']
+    val_split = experiment_dict['val_split']
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, labels_only=True, random_seed=seed)
+    _, _, test_scores = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, labels_only=True, random_seed=seed)
         
     predictions = np.load(os.path.join(predictions_dir, f"{exp['name']}_predictions.npy"))
     groundtruth = test_scores
     
-    plot_dir = os.path.join(predictions_dir, f"{exp['name']}_graphs")
     results_dir = f'./augmentation-results/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
@@ -185,8 +222,12 @@ def main():
     if (output_format == 'distribution'):
         metrics = get_distribution_metrics_and_plot(groundtruth, predictions)
 
-    # Binary-like ground-truths
+    # Weighed binary-like ground-truths
     if (output_format == 'weights'):
+        metrics = get_weighed_binary_metrics_and_plot(groundtruth, predictions)
+
+    # Binary-like ground-truths
+    if (output_format in ['binary', 'ovr-binary']):
         metrics = get_binary_metrics_and_plot(groundtruth, predictions)
 
     # Ten-class ground-truths
@@ -199,7 +240,8 @@ def main():
         confmat = metrics['confusion_matrix']
         df_cm = pd.DataFrame(confmat, index=[i for i in class_names], columns=[i for i in class_names])
         plt.figure(figsize=(10,7))
-        sns.heatmap(df_cm, annot=True)
+        sns.heatmap(df_cm, annot=True, fmt='g')
+        plt.xticks(rotation=45)
         plt.savefig(os.path.join(confmat_dir, f"{exp['name']}_confmat.svg"))
 
     with open(os.path.join(results_dir, f"{exp['name']}_results.json"), 'w') as f:
