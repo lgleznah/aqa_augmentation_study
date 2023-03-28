@@ -3,7 +3,7 @@ dataset: photozilla-ovr-architecture
 lr: 1.e-3
 use_plateau: yes
 weight_classes: no
-epochs: 13
+epochs: 12
 exps:
   - name: brightness_25
     base_model: mobilenet
