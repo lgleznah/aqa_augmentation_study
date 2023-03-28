@@ -103,13 +103,6 @@ def get_weighed_binary_metrics_and_plot(ground, pred):
     avg_entropy_pred = np.mean([entropy(p, base=2) for p in pred])
     avg_entropy_grnd = np.mean([entropy(g, base=2) for g in ground])
 
-    # Component swapping fix
-    if (accuracy < 0.5):
-        pred = 1 - pred
-        bal_accuracy = balanced_accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
-        accuracy = accuracy_score(ground[:,1] > 0.5, pred[:,1] > 0.5)
-        mse = mean_squared_error(ground, pred)
-
     metrics_dict['binary_balanced_accuracy'] = bal_accuracy
     metrics_dict['binary_accuracy'] = accuracy
     metrics_dict['mean_squared_error'] = mse
@@ -139,13 +132,6 @@ def get_binary_metrics_and_plot(ground, pred):
     confmat = confusion_matrix(ground > 0.5, pred > 0.5).tolist()
     avg_entropy_pred = np.mean([entropy([p, 1-p], base=2) for p in pred])
     avg_entropy_grnd = np.mean([entropy([g, 1-g], base=2) for g in ground])
-
-    # Component swapping fix
-    if (accuracy < 0.5):
-        pred = 1 - pred
-        bal_accuracy = balanced_accuracy_score(ground > 0.5, pred > 0.5)
-        accuracy = accuracy_score(ground > 0.5, pred > 0.5)
-        mse = mean_squared_error(ground, pred)
 
     metrics_dict['binary_balanced_accuracy'] = bal_accuracy
     metrics_dict['binary_accuracy'] = accuracy
