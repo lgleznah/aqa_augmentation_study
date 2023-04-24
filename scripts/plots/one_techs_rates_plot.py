@@ -87,7 +87,7 @@ def fig_gen(experiment_group, out_format, baseline_name, rates, save=False, metr
         if metric_name == 'balanced_accuracy':
             axes_to_plot.axhline(y = 0.5, color = 'r', linestyle = 'dotted', label = 'ZeroR performance', linewidth = 1.5)
 
-        axes_to_plot.set_xticks([0,10,20,30,40,50,60,70,80,90,100])
+        axes_to_plot.set_xticks([0,25,50,75,100])
         axes_to_plot.set_xlim(0, 100)
 
         axes_to_plot.set_ylim(0,1)
