@@ -75,7 +75,7 @@ def fig_gen(experiment_group, out_format, baseline_name, rates, save=False, metr
             
             axes_to_plot.plot([0] + rates, metric_values, label=exp.capitalize(), color=experiment_names_colors[exp])
 
-        axes_to_plot.axhline(y = baseline_metric, color = 'g', linestyle = '--', label = 'Baseline')
+        axes_to_plot.axhline(y = baseline_metric, color = 'g', linestyle = (0,(1,5)), label = 'Baseline')
 
         # Set vertical limits, if plotting accuracy or balanced accuracy. Leave no upper limit, otherwise
         if metric_name in ['balanced_accuracy', 'accuracy']:

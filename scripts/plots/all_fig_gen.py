@@ -77,7 +77,7 @@ def main():
         for exp_number, experiment in enumerate(experiments[1:], 1):
             fig_gen(experiment, 'binary', baselines[exp_number], rates, ax=axes[f'ax{exp_number}'], metric='binary_balanced_accuracy', legend=False)
 
-        fig.legend(axes['ax0'].lines, ['Brightness', 'Contrast', 'Flip', 'Rotation', 'Translation', 'Zoom'])
+        fig.legend(axes['ax0'].lines, ['Brightness', 'Contrast', 'Flip', 'Rotation', 'Translation', 'Zoom', 'Baseline'])
         plt.savefig(os.path.join('figures', f'{plot_name}.eps'))
         plt.close()
 
