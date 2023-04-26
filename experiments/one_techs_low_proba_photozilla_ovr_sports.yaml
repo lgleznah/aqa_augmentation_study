@@ -1,0 +1,308 @@
+seed: 1234
+dataset: photozilla-ovr-sports
+lr: 1.e-3
+use_plateau: yes
+weight_classes: no
+epochs: 12
+exps:
+  - name: brightness_25
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: brightness
+        rate: 0.25
+        args:
+          - 0.25: float
+
+  - name: brightness_50
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: brightness
+        rate: 0.25
+        args:
+          - 0.50: float
+
+  - name: brightness_75
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: brightness
+        rate: 0.25
+        args:
+          - 0.75: float
+
+  - name: brightness_100
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: brightness
+        rate: 0.25
+        args:
+          - 1.0: float
+
+  - name: contrast_25
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: contrast
+        rate: 0.25
+        args:
+          - 0.25: float
+
+  - name: contrast_50
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: contrast
+        rate: 0.25
+        args:
+          - 0.50: float
+
+  - name: contrast_75
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: contrast
+        rate: 0.25
+        args:
+          - 0.75: float
+
+  - name: contrast_100
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: contrast
+        rate: 0.25
+        args:
+          - 1.0: float
+
+  - name: flip_h
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.25
+        args:
+          - horizontal: string
+
+  - name: flip_v
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.25
+        args:
+          - vertical: string
+
+  - name: flip_hv
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: flip
+        rate: 0.25
+        args:
+          - horizontal_and_vertical: string
+
+  - name: rotation_25
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: rotation
+        rate: 0.25
+        args:
+          - 0.25: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: rotation_50
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: rotation
+        rate: 0.25
+        args:
+          - 0.50: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: rotation_75
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: rotation
+        rate: 0.25
+        args:
+          - 0.75: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: rotation_100
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: rotation
+        rate: 0.25
+        args:
+          - 1.0: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: translation_25
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: translation
+        rate: 0.25
+        args:
+          - 0.25: float
+          - 0.25: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: translation_50
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: translation
+        rate: 0.25
+        args:
+          - 0.50: float
+          - 0.50: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: translation_75
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: translation
+        rate: 0.25
+        args:
+          - 0.75: float
+          - 0.75: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: translation_100
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: translation
+        rate: 0.25
+        args:
+          - 1.0: float
+          - 1.0: float
+        kwargs:
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: zoom_25
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.25
+        args:
+          - 0.25: float
+        kwargs:
+          width_factor:
+            0.25: float
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: zoom_50
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.25
+        args:
+          - 0.50: float
+        kwargs:
+          width_factor:
+            0.50: float
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: zoom_75
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.25
+        args:
+          - 0.75: float
+        kwargs:
+          width_factor:
+            0.75: float
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
+
+  - name: zoom_100
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
+    layers:
+      - layer: zoom
+        rate: 0.25
+        args:
+          - 1.0: float
+        kwargs:
+          width_factor:
+            1.0: float
+          fill_mode:
+            constant: string
+          fill_value:
+            255.0: float
