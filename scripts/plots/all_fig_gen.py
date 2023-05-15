@@ -3,78 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 from one_techs_rates_plot import fig_gen as rates_fig_gen
 from one_techs_intensities_plot import fig_gen as intensities_fig_gen
-
-baselines = [
-    'baseline_ava_small',
-    'baseline_photozilla_ovr_aerial',
-    'baseline_photozilla_ovr_architecture',
-    'baseline_photozilla_ovr_event',
-    'baseline_photozilla_ovr_fashion',
-    'baseline_photozilla_ovr_food',
-    'baseline_photozilla_ovr_nature',
-    'baseline_photozilla_ovr_sports',
-    'baseline_photozilla_ovr_street',
-    'baseline_photozilla_ovr_wedding',
-    'baseline_photozilla_ovr_wildlife',
-]
-
-low_intensity = [
-    'one_techs_low_intensity_ava_small',
-    'one_techs_low_intensity_photozilla_ovr_aerial',
-    'one_techs_low_intensity_photozilla_ovr_architecture',
-    'one_techs_low_intensity_photozilla_ovr_event',
-    'one_techs_low_intensity_photozilla_ovr_fashion',
-    'one_techs_low_intensity_photozilla_ovr_food',
-    'one_techs_low_intensity_photozilla_ovr_nature',
-    'one_techs_low_intensity_photozilla_ovr_sports',
-    'one_techs_low_intensity_photozilla_ovr_street',
-    'one_techs_low_intensity_photozilla_ovr_wedding',
-    'one_techs_low_intensity_photozilla_ovr_wildlife',
-]
-
-high_intensity = [
-    'one_techs_high_intensity_ava_small',
-    'one_techs_high_intensity_photozilla_ovr_aerial',
-    'one_techs_high_intensity_photozilla_ovr_architecture',
-    'one_techs_high_intensity_photozilla_ovr_event',
-    'one_techs_high_intensity_photozilla_ovr_fashion',
-    'one_techs_high_intensity_photozilla_ovr_food',
-    'one_techs_high_intensity_photozilla_ovr_nature',
-    'one_techs_high_intensity_photozilla_ovr_sports',
-    'one_techs_high_intensity_photozilla_ovr_street',
-    'one_techs_high_intensity_photozilla_ovr_wedding',
-    'one_techs_high_intensity_photozilla_ovr_wildlife',
-]
-
-low_probability = [
-    'one_techs_low_proba_ava_small',
-    'one_techs_low_proba_photozilla_ovr_aerial',
-    'one_techs_low_proba_photozilla_ovr_architecture',
-    'one_techs_low_proba_photozilla_ovr_event',
-    'one_techs_low_proba_photozilla_ovr_fashion',
-    'one_techs_low_proba_photozilla_ovr_food',
-    'one_techs_low_proba_photozilla_ovr_nature',
-    'one_techs_low_proba_photozilla_ovr_sports',
-    'one_techs_low_proba_photozilla_ovr_street',
-    'one_techs_low_proba_photozilla_ovr_wedding',
-    'one_techs_low_proba_photozilla_ovr_wildlife',
-]
-
-high_probability = [
-    'one_techs_high_proba_ava_small',
-    'one_techs_high_proba_photozilla_ovr_aerial',
-    'one_techs_high_proba_photozilla_ovr_architecture',
-    'one_techs_high_proba_photozilla_ovr_event',
-    'one_techs_high_proba_photozilla_ovr_fashion',
-    'one_techs_high_proba_photozilla_ovr_food',
-    'one_techs_high_proba_photozilla_ovr_nature',
-    'one_techs_high_proba_photozilla_ovr_sports',
-    'one_techs_high_proba_photozilla_ovr_street',
-    'one_techs_high_proba_photozilla_ovr_wedding',
-    'one_techs_high_proba_photozilla_ovr_wildlife',
-]
-
-rates = [25, 50, 75, 100]
+from experiment_lists import baselines, low_intensity, high_intensity, low_probability, high_probability, rates
 
 scale = 3
 margin_frac = 0.05

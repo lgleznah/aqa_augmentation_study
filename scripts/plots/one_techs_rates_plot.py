@@ -6,10 +6,10 @@ import sys
 experiment_names_colors = {
     'brightness': '#0061ff', 
     'contrast': '#60efff', 
-    'flip': '#f7b267', 
-    'rotation': '#f79d65', 
-    'translation': '#f4845f', 
-    'zoom': '#f27059'
+    'flip': '#7c6a0a', 
+    'rotation': '#babd8d', 
+    'translation': '#ff97b7', 
+    'zoom': '#eb6424'
 }
 
 metrics_per_type = {
@@ -30,6 +30,8 @@ titles_per_baseline = {
     'baseline_photozilla_ovr_street': 'Photozilla-street',
     'baseline_photozilla_ovr_wedding': 'Photozilla-wedding',
     'baseline_photozilla_ovr_wildlife': 'Photozilla-wildlife',
+    'baseline_celeba_celebs': 'CelebA celebs',
+    'baseline_celeba_photos': 'CelebA photos'
 }
 
 def fig_gen(experiment_group, out_format, baseline_name, rates, save=False, metric=None, ax=None, legend=True):

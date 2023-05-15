@@ -30,6 +30,8 @@ titles_per_baseline = {
     'baseline_photozilla_ovr_street': 'Photozilla-street',
     'baseline_photozilla_ovr_wedding': 'Photozilla-wedding',
     'baseline_photozilla_ovr_wildlife': 'Photozilla-wildlife',
+    'baseline_celeba_celebs': 'CelebA celebs',
+    'baseline_celeba_photos': 'CelebA photos'
 }
 
 flip_values = ['h', 'v', 'hv']
