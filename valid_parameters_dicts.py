@@ -68,4 +68,6 @@ DATASETS_DICT = {
     'photozilla-ovr-wedding': ('Photozilla_ovr_wedding_info_folder', 'Photozilla_images_folder'),
     'photozilla-ovr-wildlife': ('Photozilla_ovr_wildlife_info_folder', 'Photozilla_images_folder'),
     'ps-ovr-aerial': ('ps_ovr_aerial_info_folder', 'Photozilla_images_folder'),
+    'celeba-celebs': ('celeba_celebs_info_folder', 'celeba_images_folder'),
+    'celeba-photos': ('celeba_photos_info_folder', 'celeba_images_folder')
 }
