@@ -44,11 +44,19 @@ def generate_dataset_with_splits(dataset_specs, label_columns, output_format, in
     labels = vpd.TRANSFORMERS_DICT[output_format][0](np.array(info_csv.iloc[:,label_columns]))
 
     # Perform training, validation and testing splits, Stratify only for tenclass problems
-    stratify_train_test = None if output_format not in ['tenclass', 'ovr-binary', 'binary'] else labels
-    train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed, stratify=stratify_train_test)
+    # Fetch partitions manually if these are specified in the info CSV file
+    if ('partition' in info_csv.columns):
+        partitions = info_csv['partition'].to_numpy()
+        train_image_paths, train_labels = file_list[partitions == 0], labels[partitions == 0]
+        val_image_paths, val_labels = file_list[partitions == 1], labels[partitions == 1]
+        test_image_paths, test_labels = file_list[partitions == 2], labels[partitions == 2]
 
-    stratify_train_val = None if output_format not in ['tenclass', 'ovr-binary', 'binary'] else train_labels
-    train_image_paths, val_image_paths, train_labels, val_labels = train_test_split(train_image_paths, train_labels, test_size = val_split, random_state = random_seed, stratify=stratify_train_val)
+    else:
+        stratify_train_test = None if output_format not in ['tenclass', 'ovr-binary', 'binary'] else labels
+        train_image_paths, test_image_paths, train_labels, test_labels = train_test_split(file_list, labels, test_size = test_split, random_state = random_seed, stratify=stratify_train_test)
+
+        stratify_train_val = None if output_format not in ['tenclass', 'ovr-binary', 'binary'] else train_labels
+        train_image_paths, val_image_paths, train_labels, val_labels = train_test_split(train_image_paths, train_labels, test_size = val_split, random_state = random_seed, stratify=stratify_train_val)
 
     if (labels_only):
         return train_labels, val_labels, test_labels
