@@ -63,7 +63,7 @@ def generate_dataset_with_splits(dataset_specs, label_columns, output_format, in
 
     # Generate datasets
     image_parser = image_parser_generator(input_shape[:2])
-    train_dataset = tf.data.Dataset.from_tensor_slices((train_image_paths, train_labels)).shuffle(1024, seed=random_seed).map(image_parser).batch(batch_size).prefetch(-1)
+    train_dataset = tf.data.Dataset.from_tensor_slices((train_image_paths, train_labels)).shuffle(10000, seed=random_seed).map(image_parser).batch(batch_size).prefetch(-1)
     val_dataset = tf.data.Dataset.from_tensor_slices((val_image_paths, val_labels)).map(image_parser).batch(batch_size).prefetch(-1)
     test_dataset = tf.data.Dataset.from_tensor_slices((test_image_paths, test_labels)).map(image_parser).batch(batch_size).prefetch(-1)
 
