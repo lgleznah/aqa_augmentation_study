@@ -31,7 +31,17 @@ titles_per_baseline = {
     'baseline_photozilla_ovr_wedding': 'Photozilla-wedding',
     'baseline_photozilla_ovr_wildlife': 'Photozilla-wildlife',
     'baseline_celeba_celebs': 'CelebA celebs',
-    'baseline_celeba_photos': 'CelebA photos'
+    'baseline_celeba_photos': 'CelebA photos',
+    'baseline_celeba_archbrows': 'CelebA arched eyebrows',
+    'baseline_celeba_biglips': 'CelebA big lips',
+    'baseline_celeba_bignose': 'CelebA big nose',
+    'baseline_celeba_blackhair': 'CelebA black hair',
+    'baseline_celeba_brownhair': 'CelebA brown hair',
+    'baseline_celeba_ovalface': 'CelebA oval face',
+    'baseline_celeba_pointynose': 'CelebA pointy nose',
+    'baseline_celeba_strhair': 'CelebA straight hair',
+    'baseline_celeba_wavyhair': 'CelebA wavy hair',
+    'baseline_celeba_young': 'CelebA young'
 }
 
 def fig_gen(experiment_group, out_format, baseline_name, rates, save=False, metric=None, ax=None, legend=True):
