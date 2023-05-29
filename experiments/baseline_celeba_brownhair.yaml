@@ -1,0 +1,11 @@
+seed: 1234
+dataset: celeba-brownhair
+lr: 1.e-3
+use_plateau: yes
+weight_classes: no
+epochs: 12
+exps:
+  - name: baseline
+    base_model: mobilenet
+    output_format: ovr-binary
+    batch_size: 128
