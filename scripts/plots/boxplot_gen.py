@@ -51,9 +51,19 @@ def main():
                         results_list_ava.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_ava)
-        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
+        plot = sns.boxplot(
+            data=df, 
+            x='Balanced accuracy difference', 
+            y='Augmentation technique', 
+            hue='Dataset', 
+            medianprops=dict(color="#008000", alpha=1.0),
+            boxprops={'zorder':10},
+            whiskerprops={'zorder':10},
+            zorder=10
+        )
+        plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
         fig = plot.get_figure()
-        fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_ava_photozilla.eps'))
+        fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_ava_photozilla.eps'))
         plt.close()
 
     for experiments, plot_name in [(low_intensity_cel, 'low_intensity'), (high_intensity_cel, 'high_intensity')]:
@@ -73,9 +83,19 @@ def main():
                         results_list_celeba.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_celeba)
-        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
+        plot = sns.boxplot(
+            data=df, 
+            x='Balanced accuracy difference', 
+            y='Augmentation technique', 
+            hue='Dataset', 
+            medianprops=dict(color="#008000", alpha=1.0),
+            boxprops={'zorder':10},
+            whiskerprops={'zorder':10},
+            zorder=10
+        )
+        plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
         fig = plot.get_figure()
-        fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_celeba.eps'))
+        fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_celeba.eps'))
         plt.close()
 
     sns.set_palette(palette_agg)
@@ -104,9 +124,19 @@ def main():
                         results_list_aggregated.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_aggregated)
-        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
+        plot = sns.boxplot(
+            data=df, 
+            x='Balanced accuracy difference', 
+            y='Augmentation technique', 
+            hue='Dataset', 
+            medianprops=dict(color="#008000", alpha=1.0),
+            boxprops={'zorder':10},
+            whiskerprops={'zorder':10},
+            zorder=10
+        )
+        plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
         fig = plot.get_figure()
-        fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_aggregated.eps'))
+        fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_aggregated.eps'))
         plt.close()
 
     for experiment in low_intensity_ava + low_intensity_cel + high_intensity_ava + high_intensity_cel:
@@ -144,7 +174,7 @@ def main():
     )
     plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
     fig = plot.get_figure()
-    fig.savefig(os.path.join('figures', f'boxlpot_full_aggregated.eps'))
+    fig.savefig(os.path.join('figures', f'boxplot_full_aggregated.eps'))
     plt.close()
 
 if __name__ == "__main__":
