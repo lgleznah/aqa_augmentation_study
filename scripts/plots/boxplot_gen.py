@@ -20,7 +20,13 @@ def main():
     low_intensity_cel, high_intensity_cel = low_intensity['celeba'], high_intensity['celeba']
     baselines_ava, baselines_cel = baselines['ava-photozilla'], baselines['celeba']
 
-    sns.set(rc={"figure.figsize":(8.27*scale, 11.69*scale)})
+    sns.set(rc={
+        "figure.figsize":(8.27*scale, 11.69*scale), 
+        "font.size":25, 
+        "axes.labelsize":25,
+        "xtick.labelsize":20,
+        "ytick.labelsize":20,
+    })
     sns.set_palette(palette)
 
     for baseline in baselines_ava + baselines_cel:
@@ -38,14 +44,14 @@ def main():
                     with open(os.path.join('augmentation-results', experiment, f'{technique}_{rate}_results.json'), 'r') as f:
                         results = json.load(f)
                         result_dict = {
-                            'technique': technique,
-                            'dataset': dataset_name.capitalize(),
-                            'difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
+                            'Augmentation technique': technique,
+                            'Dataset': dataset_name.capitalize(),
+                            'Balanced accuracy difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
                         }
                         results_list_ava.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_ava)
-        plot = sns.boxplot(data=df, x='difference', y='technique', hue='dataset')
+        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_ava_photozilla.eps'))
         plt.close()
@@ -60,14 +66,14 @@ def main():
                     with open(os.path.join('augmentation-results', experiment, f'{technique}_{rate}_results.json'), 'r') as f:
                         results = json.load(f)
                         result_dict = {
-                            'technique': technique,
-                            'dataset': dataset_name.capitalize(),
-                            'difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
+                            'Augmentation technique': technique,
+                            'Dataset': dataset_name.capitalize(),
+                            'Balanced accuracy difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
                         }
                         results_list_celeba.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_celeba)
-        plot = sns.boxplot(data=df, x='difference', y='technique', hue='dataset')
+        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_celeba.eps'))
         plt.close()
@@ -91,14 +97,14 @@ def main():
                     with open(os.path.join('augmentation-results', experiment, f'{technique}_{rate}_results.json'), 'r') as f:
                         results = json.load(f)
                         result_dict = {
-                            'technique': technique,
-                            'dataset': dataset_name.capitalize(),
-                            'difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
+                            'Augmentation technique': technique,
+                            'Dataset': dataset_name.capitalize(),
+                            'Balanced accuracy difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
                         }
                         results_list_aggregated.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_aggregated)
-        plot = sns.boxplot(data=df, x='difference', y='technique', hue='dataset')
+        plot = sns.boxplot(data=df, x='Balanced accuracy difference', y='Augmentation technique', hue='Dataset', medianprops=dict(color="#008000", alpha=0.7))
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxlpot_aggregated.eps'))
         plt.close()
@@ -119,14 +125,24 @@ def main():
                 with open(os.path.join('augmentation-results', experiment, f'{technique}_{rate}_results.json'), 'r') as f:
                     results = json.load(f)
                     result_dict = {
-                        'technique': technique,
-                        'dataset': dataset_name.capitalize(),
-                        'difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
+                        'Augmentation technique': technique,
+                        'Dataset': dataset_name.capitalize(),
+                        'Balanced accuracy difference': results['binary_balanced_accuracy'] - baseline_results[baseline_name]
                     }
                     results_list_full_aggregated.append(result_dict)
 
     df = pd.DataFrame.from_records(results_list_full_aggregated)
-    plot = sns.boxplot(data=df, x='difference', y='technique', hue='dataset')
+    plot = sns.boxplot(
+        data=df, 
+        x='Balanced accuracy difference', 
+        y='Augmentation technique', 
+        hue='Dataset', 
+        medianprops=dict(color="#008000", alpha=1.0),
+        boxprops={'zorder':10},
+        whiskerprops={'zorder':10},
+        zorder=10
+    )
+    plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
     fig = plot.get_figure()
     fig.savefig(os.path.join('figures', f'boxlpot_full_aggregated.eps'))
     plt.close()
