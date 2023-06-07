@@ -104,7 +104,7 @@ def main():
         for experiment in experiments:
             baseline_name = f"baseline_{'_'.join(experiment.split('_')[4:])}"
             dataset_name = ' '.join(baseline_name.split('_')[1:])
-            if dataset_name not in ['celeba photos', 'ava small']:
+            if dataset_name not in ['celeba attractive', 'ava small']:
                 if dataset_name[0] == 'p':
                     dataset_name = 'Photozilla'
                 elif dataset_name[0] == 'c':
@@ -142,7 +142,7 @@ def main():
     for experiment in low_intensity_ava + low_intensity_cel + high_intensity_ava + high_intensity_cel:
         baseline_name = f"baseline_{'_'.join(experiment.split('_')[4:])}"
         dataset_name = ' '.join(baseline_name.split('_')[1:])
-        if dataset_name not in ['celeba photos', 'ava small']:
+        if dataset_name not in ['celeba attractive', 'ava small']:
             if dataset_name[0] == 'p':
                 dataset_name = 'Photozilla'
             elif dataset_name[0] == 'c':

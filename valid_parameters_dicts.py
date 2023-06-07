@@ -69,7 +69,7 @@ DATASETS_DICT = {
     'photozilla-ovr-wildlife': ('Photozilla_ovr_wildlife_info_folder', 'Photozilla_images_folder'),
     'ps-ovr-aerial': ('ps_ovr_aerial_info_folder', 'Photozilla_images_folder'),
     'celeba-celebs': ('celeba_celebs_info_folder', 'celeba_images_folder'),
-    'celeba-photos': ('celeba_photos_info_folder', 'celeba_images_folder'),
+    'celeba-attractive': ('celeba_attractive_info_folder', 'celeba_images_folder'),
     'celeba-archbrows': ('celeba_archbrows_folder', 'celeba_images_folder'),
     'celeba-biglips': ('celeba_biglips_folder', 'celeba_images_folder'),
     'celeba-bignose': ('celeba_bignose_folder', 'celeba_images_folder'),

@@ -13,7 +13,7 @@ baselines = {
         'baseline_photozilla_ovr_wildlife'
     ],
     'celeba': [
-        'baseline_celeba_photos',
+        'baseline_celeba_attractive',
         'baseline_celeba_earrings',
         'baseline_celeba_eyeglasses',
         'baseline_celeba_hair',
@@ -46,7 +46,7 @@ low_intensity = {
         'one_techs_low_intensity_photozilla_ovr_wildlife'
     ],
     'celeba': [
-        'one_techs_low_intensity_celeba_photos',
+        'one_techs_low_intensity_celeba_attractive',
         'one_techs_low_intensity_celeba_earrings',
         'one_techs_low_intensity_celeba_eyeglasses',
         'one_techs_low_intensity_celeba_hair',
@@ -75,7 +75,7 @@ high_intensity = {
         'one_techs_high_intensity_photozilla_ovr_wildlife'
     ],
     'celeba': [
-        'one_techs_high_intensity_celeba_photos',
+        'one_techs_high_intensity_celeba_attractive',
         'one_techs_high_intensity_celeba_earrings',
         'one_techs_high_intensity_celeba_eyeglasses',
         'one_techs_high_intensity_celeba_hair',
