@@ -15,7 +15,18 @@ def main():
          Photozilla-sports & {PHSPBASE:.4f} & {PHSPB:.4f} & {PHSPC:.4f} & {PHSPF:.4f} & {PHSPR:.4f} & {PHSPT:.4f} & {PHSPZ:.4f} \\\\ \\hline
          Photozilla-street & {PHSTBASE:.4f} & {PHSTB:.4f} & {PHSTC:.4f} & {PHSTF:.4f} & {PHSTR:.4f} & {PHSTT:.4f} & {PHSTZ:.4f} \\\\ \\hline
          Photozilla-wedding & {PHWEBASE:.4f} & {PHWEB:.4f} & {PHWEC:.4f} & {PHWEF:.4f} & {PHWER:.4f} & {PHWET:.4f} & {PHWEZ:.4f} \\\\ \\hline
-         Photozilla-wildlife & {PHWIBASE:.4f} & {PHWIB:.4f} & {PHWIC:.4f} & {PHWIF:.4f} & {PHWIR:.4f} & {PHWIT:.4f} & {PHWIZ:.4f} \\\\
+         Photozilla-wildlife & {PHWIBASE:.4f} & {PHWIB:.4f} & {PHWIC:.4f} & {PHWIF:.4f} & {PHWIR:.4f} & {PHWIT:.4f} & {PHWIZ:.4f} \\\\ \\hhline{{=#=#======}}
+         CelebA-attractive & {CLATBASE:.4f} & {CLATB:.4f} & {CLATC:.4f} & {CLATF:.4f} & {CLATR:.4f} & {CLATT:.4f} & {CLATZ:.4f} \\\\ \\hhline{{=#=#======}}
+         CelebA-earrings & {CLERBASE:.4f} & {CLERB:.4f} & {CLERC:.4f} & {CLERF:.4f} & {CLERR:.4f} & {CLERT:.4f} & {CLERZ:.4f} \\\\ \\hline
+         CelebA-eyeglasses & {CLEYBASE:.4f} & {CLEYB:.4f} & {CLEYC:.4f} & {CLEYF:.4f} & {CLEYR:.4f} & {CLEYT:.4f} & {CLEYZ:.4f} \\\\ \\hline
+         CelebA-hair & {CLHABASE:.4f} & {CLHAB:.4f} & {CLHAC:.4f} & {CLHAF:.4f} & {CLHAR:.4f} & {CLHAT:.4f} & {CLHAZ:.4f} \\\\ \\hline
+         CelebA-hat & {CLHTBASE:.4f} & {CLHTB:.4f} & {CLHTC:.4f} & {CLHTF:.4f} & {CLHTR:.4f} & {CLHTT:.4f} & {CLHTZ:.4f} \\\\ \\hline
+         CelebA-male & {CLMABASE:.4f} & {CLMAB:.4f} & {CLMAC:.4f} & {CLMAF:.4f} & {CLMAR:.4f} & {CLMAT:.4f} & {CLMAZ:.4f} \\\\ \\hline
+         CelebA-necklace & {CLNLBASE:.4f} & {CLNLB:.4f} & {CLNLC:.4f} & {CLNLF:.4f} & {CLNLR:.4f} & {CLNLT:.4f} & {CLNLZ:.4f} \\\\ \\hline
+         CelebA-necktie & {CLNTBASE:.4f} & {CLNTB:.4f} & {CLNTC:.4f} & {CLNTF:.4f} & {CLNTR:.4f} & {CLNTT:.4f} & {CLNTZ:.4f} \\\\ \\hline
+         CelebA-straight hair & {CLSTBASE:.4f} & {CLSTB:.4f} & {CLSTC:.4f} & {CLSTF:.4f} & {CLSTR:.4f} & {CLSTT:.4f} & {CLSTZ:.4f} \\\\ \\hline
+         CelebA-wavy hair & {CLWABASE:.4f} & {CLWAB:.4f} & {CLWAC:.4f} & {CLWAF:.4f} & {CLWAR:.4f} & {CLWAT:.4f} & {CLWAZ:.4f} \\\\ \\hline
+         CelebA-young & {CLYOBASE:.4f} & {CLYOB:.4f} & {CLYOC:.4f} & {CLYOF:.4f} & {CLYOR:.4f} & {CLYOT:.4f} & {CLYOZ:.4f} \\\\ \\hline
     \\end{{tabular}}"""
 
     datasets = {
@@ -29,7 +40,18 @@ def main():
         'photozilla_ovr_sports': 'PHSP',
         'photozilla_ovr_street': 'PHST',
         'photozilla_ovr_wedding': 'PHWE',
-        'photozilla_ovr_wildlife': 'PHWI'
+        'photozilla_ovr_wildlife': 'PHWI',
+        'celeba_attractive': 'CLAT',
+        'celeba_earrings': 'CLER',
+        'celeba_eyeglasses': 'CLEY',
+        'celeba_hair': 'CLHA',
+        'celeba_hat': 'CLHT',
+        'celeba_male': 'CLMA',
+        'celeba_necklace': 'CLNL',
+        'celeba_necktie': 'CLNT',
+        'celeba_strhair': 'CLST',
+        'celeba_wavyhair': 'CLWA',
+        'celeba_young': 'CLYO'
     }
 
     augmentations = {

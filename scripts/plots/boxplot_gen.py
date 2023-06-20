@@ -62,6 +62,7 @@ def main():
             zorder=10
         )
         plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
+        plot.set_xlim(-0.5, 0.5)
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_ava_photozilla.eps'))
         plt.close()
@@ -94,11 +95,18 @@ def main():
             zorder=10
         )
         plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
+        plot.set_xlim(-0.5, 0.5)
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_celeba.eps'))
         plt.close()
 
     sns.set_palette(palette_agg)
+    # Generate two boxplots in the same figure, for the aggreagated boxplots
+    two_agg_boxplots, axes = plt.subplots(1,2, figsize=(8.27*scale, 11.69*scale))
+    plt.subplots_adjust(wspace=0.05, hspace=0)
+    plt.close()
+    i = 0
+
     for experiments, plot_name in [(low_intensity_ava + low_intensity_cel, 'low_intensity'), (high_intensity_ava + high_intensity_cel, 'high_intensity')]:
         results_list_aggregated = []
         for experiment in experiments:
@@ -124,6 +132,19 @@ def main():
                         results_list_aggregated.append(result_dict)
 
         df = pd.DataFrame.from_records(results_list_aggregated)
+        plot_sf = sns.boxplot(
+            data=df, 
+            x='Balanced accuracy difference', 
+            y='Augmentation technique', 
+            hue='Dataset', 
+            medianprops=dict(color="#008000", alpha=1.0),
+            boxprops={'zorder':10},
+            whiskerprops={'zorder':10},
+            zorder=10,
+            ax=axes[i]
+        )
+        plot_sf.legend().set_visible(False)
+
         plot = sns.boxplot(
             data=df, 
             x='Balanced accuracy difference', 
@@ -134,10 +155,21 @@ def main():
             whiskerprops={'zorder':10},
             zorder=10
         )
+        i += 1
+
         plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
+        plot.set_xlim(-0.5, 0.5)
+        plot_sf.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
+        plot_sf.set_xlim(-0.5, 0.5)
         fig = plot.get_figure()
         fig.savefig(os.path.join('figures', f'{plot_name}_boxplot_aggregated.eps'))
         plt.close()
+
+    axes[1].set_yticklabels([])
+    axes[1].set_ylabel('')
+    two_agg_boxplots.legend(handles=axes[0].get_legend_handles_labels()[0], loc='upper center', fontsize=15)
+    two_agg_boxplots.savefig(os.path.join('figures', 'two_boxplot_aggregated.eps'))
+    plt.close()
 
     for experiment in low_intensity_ava + low_intensity_cel + high_intensity_ava + high_intensity_cel:
         baseline_name = f"baseline_{'_'.join(experiment.split('_')[4:])}"
@@ -173,6 +205,7 @@ def main():
         zorder=10
     )
     plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
+    plot.set_xlim(-0.5, 0.5)
     fig = plot.get_figure()
     fig.savefig(os.path.join('figures', f'boxplot_full_aggregated.eps'))
     plt.close()
