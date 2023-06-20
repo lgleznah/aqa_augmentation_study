@@ -144,6 +144,7 @@ def main():
             ax=axes[i]
         )
         plot_sf.legend().set_visible(False)
+        plot_sf.set_title(plot_name.replace('_', ' ').capitalize(), fontsize=20)
 
         plot = sns.boxplot(
             data=df, 
