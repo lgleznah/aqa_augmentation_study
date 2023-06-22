@@ -168,7 +168,7 @@ def main():
 
     axes[1].set_yticklabels([])
     axes[1].set_ylabel('')
-    two_agg_boxplots.suptitle('Balanced accuracy difference', y = 0.07)
+    two_agg_boxplots.suptitle('Balanced accuracy difference', y = 0.09)
     axes[0].set_xlabel('')
     axes[1].set_xlabel('')
     two_agg_boxplots.legend(handles=axes[0].get_legend_handles_labels()[0], loc='center', bbox_to_anchor=(0.5, 0.93), fontsize=20, ncol=4)
@@ -208,8 +208,11 @@ def main():
         whiskerprops={'zorder':10},
         zorder=10
     )
+    plot.legend().set_visible(False)
+    plot.legend(loc='center', bbox_to_anchor=(0.5, 1.05), fontsize=20, ncol=4)
     plot.axvline(x=0, ymin=0, ymax=1, color='black', zorder=1, linestyle=":")
     plot.set_xlim(-0.5, 0.5)
+    plot.set_xlabel('Balanced accuracy difference', fontsize=25)
     fig = plot.get_figure()
     fig.savefig(os.path.join('figures', f'boxplot_full_aggregated.eps'))
     plt.close()
