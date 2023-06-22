@@ -22,8 +22,8 @@ def main():
 
     sns.set(rc={
         "figure.figsize":(8.27*scale, 11.69*scale), 
-        "font.size":25, 
-        "axes.labelsize":25,
+        "font.size":20, 
+        "axes.labelsize":20,
         "xtick.labelsize":20,
         "ytick.labelsize":20,
     })
@@ -168,7 +168,10 @@ def main():
 
     axes[1].set_yticklabels([])
     axes[1].set_ylabel('')
-    two_agg_boxplots.legend(handles=axes[0].get_legend_handles_labels()[0], loc='upper center', fontsize=15)
+    two_agg_boxplots.suptitle('Balanced accuracy difference', y = 0.07)
+    axes[0].set_xlabel('')
+    axes[1].set_xlabel('')
+    two_agg_boxplots.legend(handles=axes[0].get_legend_handles_labels()[0], loc='center', bbox_to_anchor=(0.5, 0.93), fontsize=20, ncol=4)
     two_agg_boxplots.savefig(os.path.join('figures', 'two_boxplot_aggregated.eps'))
     plt.close()
 
