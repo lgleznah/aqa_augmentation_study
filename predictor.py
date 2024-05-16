@@ -45,7 +45,9 @@ def main():
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed = seed)
+    is_autoaugment = 'autoaugment' == exp['layers'][0]['layer']
+    autoaugment_rate = 0 if not is_autoaugment else exp['layers'][0]['rate']
+    _, _, test_dataset = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed = seed, autoaugment=is_autoaugment, autoaugment_rate=autoaugment_rate)
 
     checkpoints_dir = f'./augmentation-chkpt/{os.path.splitext(os.path.basename(experiment_file))[0]}'
     model_with_augmentation.load_weights(os.path.join(checkpoints_dir, f"{exp['name']}_bestmodel.h5"))

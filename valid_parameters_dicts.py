@@ -16,7 +16,8 @@ TYPE_CONVERTERS = {
     'string': str
 }
 
-# Augmentation layers for augmentation experiments
+# Augmentation layers for augmentation experiments. Autoaugment is special in that its augmentations
+# are applied when reading the images, as most transformations are not part of TensorFlow.
 LAYERS_DICT = {
     'brightness': RandomBrightness,
     'contrast': RandomContrast,
@@ -26,7 +27,8 @@ LAYERS_DICT = {
     'rotation': RandomRotation,
     'translation': RandomTranslation,
     'width': RandomWidth,
-    'zoom': RandomZoom
+    'zoom': RandomZoom,
+    'autoaugment': None
 }
 
 # Base models for augmentation experiments. Each dict entry includes the function to generate the model,

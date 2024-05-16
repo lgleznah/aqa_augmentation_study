@@ -5,6 +5,38 @@ use_plateau: yes
 weight_classes: no
 epochs: 12
 exps:
+  - name: autoaugment_25
+    base_model: mobilenet
+    output_format: binary
+    batch_size: 128
+    layers:
+      - layer: autoaugment
+        rate: 0.25
+
+  - name: autoaugment_50
+    base_model: mobilenet
+    output_format: binary
+    batch_size: 128
+    layers:
+      - layer: autoaugment
+        rate: 0.5
+
+  - name: autoaugment_75
+    base_model: mobilenet
+    output_format: binary
+    batch_size: 128
+    layers:
+      - layer: autoaugment
+        rate: 0.75
+
+  - name: autoaugment_100
+    base_model: mobilenet
+    output_format: binary
+    batch_size: 128
+    layers:
+      - layer: autoaugment
+        rate: 1.0
+
   - name: brightness_25
     base_model: mobilenet
     output_format: binary

@@ -19,6 +19,10 @@ def get_augmented_model(experiment_specs, seed):
     # Create all augmentation layers
     for layer in experiment_specs['layers']:
 
+        # Auto-augmentation is handled by the dataset object
+        if layer['layer'] == 'autoaugment':
+            continue
+
         # Parse layer arguments, converting them to their correct type
         layer_args = []
         for argument in layer['args']:

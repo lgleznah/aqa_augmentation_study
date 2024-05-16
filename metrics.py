@@ -45,7 +45,7 @@ def bal_accuracy_thirds(ground, pred):
 
     return metrics_dict
 
-def get_distribution_metrics_and_plot(ground, pred):
+def get_distribution_metrics(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -85,7 +85,7 @@ def get_distribution_metrics_and_plot(ground, pred):
 
     return {**metrics_dict, **balaccs_per_tercile}
     
-def get_weighed_binary_metrics_and_plot(ground, pred):
+def get_weighed_binary_metrics(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -114,7 +114,7 @@ def get_weighed_binary_metrics_and_plot(ground, pred):
 
     return {**metrics_dict, **balaccs_per_tercile}
 
-def get_binary_metrics_and_plot(ground, pred):
+def get_binary_metrics(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -143,7 +143,7 @@ def get_binary_metrics_and_plot(ground, pred):
     return metrics_dict
 
 
-def get_tenclass_metrics_and_plot(ground, pred):
+def get_tenclass_metrics(ground, pred):
     """
     Compute balanced accuracy, mean EMD distance, and accuracy of a set of predictions (pred)
     WRT to another ground-truth (ground), and print results, naming the other ground truth as (ground-name).
@@ -166,6 +166,20 @@ def get_tenclass_metrics_and_plot(ground, pred):
     metrics_dict['mean_squared_error'] = mse
     metrics_dict['confusion_matrix'] = confmat
         
+    return metrics_dict
+
+def get_mean_score_metrics(ground, pred):
+    """
+    Compute MSE of a set of predictions (pred) w.r.t. to a groundtruth (ground).
+
+    Assumes both predictions and groundtruths to be real numbers.
+    """
+    metrics_dict = {}
+
+    mse = mean_squared_error(ground, pred)
+
+    metrics_dict['mean_squared_error'] = mse
+
     return metrics_dict
             
 ######################################################################################################################################
@@ -203,22 +217,26 @@ def main():
 
     # Each form of ground-truth (distribution, binary weights/classes) requires
     # a different way of obtaining metrics.
+
+    # Mean-score-like ground-truths
+    if (output_format == 'mean'):
+        metrics = get_mean_score_metrics(groundtruth, predictions)
                   
     # Distribution-like ground-truths
     if (output_format == 'distribution'):
-        metrics = get_distribution_metrics_and_plot(groundtruth, predictions)
+        metrics = get_distribution_metrics(groundtruth, predictions)
 
     # Weighed binary-like ground-truths
     if (output_format == 'weights'):
-        metrics = get_weighed_binary_metrics_and_plot(groundtruth, predictions)
+        metrics = get_weighed_binary_metrics(groundtruth, predictions)
 
     # Binary-like ground-truths
     if (output_format in ['binary', 'ovr-binary']):
-        metrics = get_binary_metrics_and_plot(groundtruth, predictions)
+        metrics = get_binary_metrics(groundtruth, predictions)
 
     # Ten-class ground-truths
     if (output_format == 'tenclass'):
-        metrics = get_tenclass_metrics_and_plot(groundtruth, predictions)
+        metrics = get_tenclass_metrics(groundtruth, predictions)
         confmat_dir = os.path.join('figures', os.path.splitext(os.path.basename(experiment_file))[0], 'confmats')
         if not os.path.exists(confmat_dir):
             os.makedirs(confmat_dir, exist_ok=True)

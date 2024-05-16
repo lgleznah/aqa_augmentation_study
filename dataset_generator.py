@@ -6,16 +6,35 @@ import valid_parameters_dicts as vpd
 import pandas as pd
 import numpy as np
 import os
-
+import PIL.Image
+import random
 import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
+from autoaugment_policies import ImageNetPolicy
 
-def image_parser_generator(input_shape):
+def image_parser_generator(input_shape, augment_rate):
     def parse_image(filename, label):
         image = tf.io.read_file(filename)
         image = tf.io.decode_jpeg(image, channels=3)
         image = tf.image.resize(image, input_shape)
+        return image, label
+    
+    return parse_image
+
+def image_parser_generator_autoaugment(input_shape, augment_rate):
+    def autoaugment(filename):
+        pil_img = PIL.Image.open(filename.numpy()).convert('RGB')
+        if random.random() < augment_rate:
+            pil_img = ImageNetPolicy(fillcolor=(256, 256, 256))(pil_img)
+        pil_img = pil_img.resize(input_shape)
+        img = np.array(pil_img)
+        return img
+    
+    def parse_image(filename, label):
+        # Apply ImageNet auto-augment policy
+        image = tf.py_function(autoaugment, [filename], tf.uint8)
+
         return image, label
     
     return parse_image
@@ -30,7 +49,7 @@ def get_class_weights(info_folder, label_column):
     for label, count in counts.items():
         scaled_counts[label] = (1 / count) * (total_examples / 2)
 
-def generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed=1000, labels_only=False):
+def generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed=1000, labels_only=False, autoaugment=False, autoaugment_rate=0):
     
     # Fetch paths from the enviroment required for loading AVA
     images_folder = os.environ[dataset_specs[1]]
@@ -62,9 +81,12 @@ def generate_dataset_with_splits(dataset_specs, label_columns, output_format, in
         return train_labels, val_labels, test_labels
 
     # Generate datasets
-    image_parser = image_parser_generator(input_shape[:2])
-    train_dataset = tf.data.Dataset.from_tensor_slices((train_image_paths, train_labels)).shuffle(10000, seed=random_seed).map(image_parser).batch(batch_size).prefetch(-1)
-    val_dataset = tf.data.Dataset.from_tensor_slices((val_image_paths, val_labels)).map(image_parser).batch(batch_size).prefetch(-1)
-    test_dataset = tf.data.Dataset.from_tensor_slices((test_image_paths, test_labels)).map(image_parser).batch(batch_size).prefetch(-1)
+    parser_func_train = image_parser_generator if not autoaugment else image_parser_generator_autoaugment
+    parser_func_valtest = image_parser_generator
+    image_parser_train = parser_func_train(input_shape[:2], autoaugment_rate)
+    image_parser_valtest = parser_func_valtest(input_shape[:2], autoaugment_rate)
+    train_dataset = tf.data.Dataset.from_tensor_slices((train_image_paths, train_labels)).shuffle(10000, seed=random_seed).map(image_parser_train).batch(batch_size).prefetch(-1)
+    val_dataset = tf.data.Dataset.from_tensor_slices((val_image_paths, val_labels)).map(image_parser_valtest).batch(batch_size).prefetch(-1)
+    test_dataset = tf.data.Dataset.from_tensor_slices((test_image_paths, test_labels)).map(image_parser_valtest).batch(batch_size).prefetch(-1)
 
     return train_dataset, val_dataset, test_dataset

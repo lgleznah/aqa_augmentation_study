@@ -27,7 +27,7 @@ baselines = {
     ]
 }
 
-techniques = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom']
+techniques = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom', 'autoaugment']
 
 rates = [25, 50, 75, 100]
 
