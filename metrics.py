@@ -177,8 +177,14 @@ def get_mean_score_metrics(ground, pred):
     metrics_dict = {}
 
     mse = mean_squared_error(ground, pred)
+    bal_accuracy = balanced_accuracy_score(ground > 0.5, pred > 0.5)
+    accuracy = accuracy_score(ground > 0.5, pred > 0.5)
+    confmat = confusion_matrix(ground > 0.5, pred > 0.5).tolist()
 
+    metrics_dict['binary_balanced_accuracy'] = bal_accuracy
+    metrics_dict['binary_accuracy'] = accuracy
     metrics_dict['mean_squared_error'] = mse
+    metrics_dict['confusion_matrix'] = confmat
 
     return metrics_dict
             

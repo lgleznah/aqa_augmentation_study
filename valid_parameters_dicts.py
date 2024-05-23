@@ -45,7 +45,7 @@ MODELS_DICT = {
 # the activation function of the final layer, the number of output neurons, and the monitoring metric
 TRANSFORMERS_DICT = {
     'distribution': (distribution_transform, slice(1,11), earth_mover_loss, 'softmax', 10, earth_mover_loss),
-    'mean': (mean_transform, slice(1, 11), 'mean_squared_error', 'linear', 1, 'mse'),
+    'mean': (mean_transform, slice(1, 11), 'mean_squared_error', 'sigmoid', 1, 'mse'),
     'binary': (binary_transform, slice(1, 11), 'binary_crossentropy', 'sigmoid', 1, 'accuracy'),
     'ovr-binary': (ovr_binary, 1, 'binary_crossentropy', 'sigmoid', 1, 'accuracy'),
     'weights': (weights_transform, slice(1, 11), 'categorical_crossentropy', 'softmax', 2, 'categorical_accuracy'),

@@ -3,34 +3,36 @@ import json
 
 def main():
 
-    table_template = """\\begin{{tabular}}{{c||c||c|c|c|c|c|c}}
-         & \\textbf{{Baseline}} & Brightness & Contrast & Flip & Rotation & Translation & Zoom  \\\\ \\hhline{{=#=#======}}
-         AVA & {AVABASE:.4f} & {AVAB:.4f} & {AVAC:.4f} & {AVAF:.4f} & {AVAR:.4f} & {AVAT:.4f} & {AVAZ:.4f} \\\\ \\hhline{{=#=#======}}
-         Photozilla-aerial & {PHAEBASE:.4f} & {PHAEB:.4f} & {PHAEC:.4f} & {PHAEF:.4f} & {PHAER:.4f} & {PHAET:.4f} & {PHAEZ:.4f} \\\\ \\hline
-         Photozilla-architecture & {PHARBASE:.4f} & {PHARB:.4f} & {PHARC:.4f} & {PHARF:.4f} & {PHARR:.4f} & {PHART:.4f} & {PHARZ:.4f} \\\\ \\hline
-         Photozilla-event & {PHEVBASE:.4f} & {PHEVB:.4f} & {PHEVC:.4f} & {PHEVF:.4f} & {PHEVR:.4f} & {PHEVT:.4f} & {PHEVZ:.4f} \\\\ \\hline
-         Photozilla-fashion & {PHFABASE:.4f} & {PHFAB:.4f} & {PHFAC:.4f} & {PHFAF:.4f} & {PHFAR:.4f} & {PHFAT:.4f} & {PHFAZ:.4f} \\\\ \\hline
-         Photozilla-food & {PHFOBASE:.4f} & {PHFOB:.4f} & {PHFOC:.4f} & {PHFOF:.4f} & {PHFOR:.4f} & {PHFOT:.4f} & {PHFOZ:.4f} \\\\ \\hline
-         Photozilla-nature & {PHNABASE:.4f} & {PHNAB:.4f} & {PHNAC:.4f} & {PHNAF:.4f} & {PHNAR:.4f} & {PHNAT:.4f} & {PHNAZ:.4f} \\\\ \\hline
-         Photozilla-sports & {PHSPBASE:.4f} & {PHSPB:.4f} & {PHSPC:.4f} & {PHSPF:.4f} & {PHSPR:.4f} & {PHSPT:.4f} & {PHSPZ:.4f} \\\\ \\hline
-         Photozilla-street & {PHSTBASE:.4f} & {PHSTB:.4f} & {PHSTC:.4f} & {PHSTF:.4f} & {PHSTR:.4f} & {PHSTT:.4f} & {PHSTZ:.4f} \\\\ \\hline
-         Photozilla-wedding & {PHWEBASE:.4f} & {PHWEB:.4f} & {PHWEC:.4f} & {PHWEF:.4f} & {PHWER:.4f} & {PHWET:.4f} & {PHWEZ:.4f} \\\\ \\hline
-         Photozilla-wildlife & {PHWIBASE:.4f} & {PHWIB:.4f} & {PHWIC:.4f} & {PHWIF:.4f} & {PHWIR:.4f} & {PHWIT:.4f} & {PHWIZ:.4f} \\\\ \\hhline{{=#=#======}}
-         CelebA-attractive & {CLATBASE:.4f} & {CLATB:.4f} & {CLATC:.4f} & {CLATF:.4f} & {CLATR:.4f} & {CLATT:.4f} & {CLATZ:.4f} \\\\ \\hhline{{=#=#======}}
-         CelebA-earrings & {CLERBASE:.4f} & {CLERB:.4f} & {CLERC:.4f} & {CLERF:.4f} & {CLERR:.4f} & {CLERT:.4f} & {CLERZ:.4f} \\\\ \\hline
-         CelebA-eyeglasses & {CLEYBASE:.4f} & {CLEYB:.4f} & {CLEYC:.4f} & {CLEYF:.4f} & {CLEYR:.4f} & {CLEYT:.4f} & {CLEYZ:.4f} \\\\ \\hline
-         CelebA-hair & {CLHABASE:.4f} & {CLHAB:.4f} & {CLHAC:.4f} & {CLHAF:.4f} & {CLHAR:.4f} & {CLHAT:.4f} & {CLHAZ:.4f} \\\\ \\hline
-         CelebA-hat & {CLHTBASE:.4f} & {CLHTB:.4f} & {CLHTC:.4f} & {CLHTF:.4f} & {CLHTR:.4f} & {CLHTT:.4f} & {CLHTZ:.4f} \\\\ \\hline
-         CelebA-male & {CLMABASE:.4f} & {CLMAB:.4f} & {CLMAC:.4f} & {CLMAF:.4f} & {CLMAR:.4f} & {CLMAT:.4f} & {CLMAZ:.4f} \\\\ \\hline
-         CelebA-necklace & {CLNLBASE:.4f} & {CLNLB:.4f} & {CLNLC:.4f} & {CLNLF:.4f} & {CLNLR:.4f} & {CLNLT:.4f} & {CLNLZ:.4f} \\\\ \\hline
-         CelebA-necktie & {CLNTBASE:.4f} & {CLNTB:.4f} & {CLNTC:.4f} & {CLNTF:.4f} & {CLNTR:.4f} & {CLNTT:.4f} & {CLNTZ:.4f} \\\\ \\hline
-         CelebA-straight hair & {CLSTBASE:.4f} & {CLSTB:.4f} & {CLSTC:.4f} & {CLSTF:.4f} & {CLSTR:.4f} & {CLSTT:.4f} & {CLSTZ:.4f} \\\\ \\hline
-         CelebA-wavy hair & {CLWABASE:.4f} & {CLWAB:.4f} & {CLWAC:.4f} & {CLWAF:.4f} & {CLWAR:.4f} & {CLWAT:.4f} & {CLWAZ:.4f} \\\\ \\hline
-         CelebA-young & {CLYOBASE:.4f} & {CLYOB:.4f} & {CLYOC:.4f} & {CLYOF:.4f} & {CLYOR:.4f} & {CLYOT:.4f} & {CLYOZ:.4f} \\\\ \\hline
+    table_template = """\\begin{{tabular}}{{c||c||c|c|c|c|c|c|c}}
+         & \\textbf{{Baseline}} & Brightness & Contrast & Flip & Rotation & Translation & Zoom & AutoAugment \\\\ \\hhline{{=#=#=======}}
+         AVA small (classification) & {AVACBASE:.4f} & {AVACB:.4f} & {AVACC:.4f} & {AVACF:.4f} & {AVACR:.4f} & {AVACT:.4f} & {AVACZ:.4f} & {AVACA:.4f} \\\\ \\hhline{{=#=#=======}}
+         AVA small (regression) & {AVARBASE:.4f} & {AVARB:.4f} & {AVARC:.4f} & {AVARF:.4f} & {AVARR:.4f} & {AVART:.4f} & {AVARZ:.4f} & {AVARA:.4f} \\\\ \\hhline{{=#=#=======}}
+         Photozilla-aerial & {PHAEBASE:.4f} & {PHAEB:.4f} & {PHAEC:.4f} & {PHAEF:.4f} & {PHAER:.4f} & {PHAET:.4f} & {PHAEZ:.4f} & {PHAEA:.4f} \\\\ \\hline
+         Photozilla-architecture & {PHARBASE:.4f} & {PHARB:.4f} & {PHARC:.4f} & {PHARF:.4f} & {PHARR:.4f} & {PHART:.4f} & {PHARZ:.4f} & {PHARA:.4f} \\\\ \\hline
+         Photozilla-event & {PHEVBASE:.4f} & {PHEVB:.4f} & {PHEVC:.4f} & {PHEVF:.4f} & {PHEVR:.4f} & {PHEVT:.4f} & {PHEVZ:.4f} & {PHEVA:.4f} \\\\ \\hline
+         Photozilla-fashion & {PHFABASE:.4f} & {PHFAB:.4f} & {PHFAC:.4f} & {PHFAF:.4f} & {PHFAR:.4f} & {PHFAT:.4f} & {PHFAZ:.4f} & {PHFAA:.4f} \\\\ \\hline
+         Photozilla-food & {PHFOBASE:.4f} & {PHFOB:.4f} & {PHFOC:.4f} & {PHFOF:.4f} & {PHFOR:.4f} & {PHFOT:.4f} & {PHFOZ:.4f} & {PHFOA:.4f} \\\\ \\hline
+         Photozilla-nature & {PHNABASE:.4f} & {PHNAB:.4f} & {PHNAC:.4f} & {PHNAF:.4f} & {PHNAR:.4f} & {PHNAT:.4f} & {PHNAZ:.4f} & {PHNAA:.4f} \\\\ \\hline
+         Photozilla-sports & {PHSPBASE:.4f} & {PHSPB:.4f} & {PHSPC:.4f} & {PHSPF:.4f} & {PHSPR:.4f} & {PHSPT:.4f} & {PHSPZ:.4f} & {PHSPA:.4f} \\\\ \\hline
+         Photozilla-street & {PHSTBASE:.4f} & {PHSTB:.4f} & {PHSTC:.4f} & {PHSTF:.4f} & {PHSTR:.4f} & {PHSTT:.4f} & {PHSTZ:.4f} & {PHSTA:.4f} \\\\ \\hline
+         Photozilla-wedding & {PHWEBASE:.4f} & {PHWEB:.4f} & {PHWEC:.4f} & {PHWEF:.4f} & {PHWER:.4f} & {PHWET:.4f} & {PHWEZ:.4f} & {PHWEA:.4f} \\\\ \\hline
+         Photozilla-wildlife & {PHWIBASE:.4f} & {PHWIB:.4f} & {PHWIC:.4f} & {PHWIF:.4f} & {PHWIR:.4f} & {PHWIT:.4f} & {PHWIZ:.4f} & {PHWIA:.4f} \\\\ \\hhline{{=#=#=======}}
+         CelebA-attractive & {CLATBASE:.4f} & {CLATB:.4f} & {CLATC:.4f} & {CLATF:.4f} & {CLATR:.4f} & {CLATT:.4f} & {CLATZ:.4f} & {CLATA:.4f} \\\\ \\hhline{{=#=#=======}}
+         CelebA-earrings & {CLERBASE:.4f} & {CLERB:.4f} & {CLERC:.4f} & {CLERF:.4f} & {CLERR:.4f} & {CLERT:.4f} & {CLERZ:.4f} & {CLERA:.4f} \\\\ \\hline
+         CelebA-eyeglasses & {CLEYBASE:.4f} & {CLEYB:.4f} & {CLEYC:.4f} & {CLEYF:.4f} & {CLEYR:.4f} & {CLEYT:.4f} & {CLEYZ:.4f} & {CLEYA:.4f} \\\\ \\hline
+         CelebA-hair & {CLHABASE:.4f} & {CLHAB:.4f} & {CLHAC:.4f} & {CLHAF:.4f} & {CLHAR:.4f} & {CLHAT:.4f} & {CLHAZ:.4f} & {CLHAA:.4f} \\\\ \\hline
+         CelebA-hat & {CLHTBASE:.4f} & {CLHTB:.4f} & {CLHTC:.4f} & {CLHTF:.4f} & {CLHTR:.4f} & {CLHTT:.4f} & {CLHTZ:.4f} & {CLHTA:.4f} \\\\ \\hline
+         CelebA-male & {CLMABASE:.4f} & {CLMAB:.4f} & {CLMAC:.4f} & {CLMAF:.4f} & {CLMAR:.4f} & {CLMAT:.4f} & {CLMAZ:.4f} & {CLMAA:.4f} \\\\ \\hline
+         CelebA-necklace & {CLNLBASE:.4f} & {CLNLB:.4f} & {CLNLC:.4f} & {CLNLF:.4f} & {CLNLR:.4f} & {CLNLT:.4f} & {CLNLZ:.4f} & {CLNLA:.4f} \\\\ \\hline
+         CelebA-necktie & {CLNTBASE:.4f} & {CLNTB:.4f} & {CLNTC:.4f} & {CLNTF:.4f} & {CLNTR:.4f} & {CLNTT:.4f} & {CLNTZ:.4f} & {CLNTA:.4f} \\\\ \\hline
+         CelebA-straight hair & {CLSTBASE:.4f} & {CLSTB:.4f} & {CLSTC:.4f} & {CLSTF:.4f} & {CLSTR:.4f} & {CLSTT:.4f} & {CLSTZ:.4f} & {CLSTA:.4f} \\\\ \\hline
+         CelebA-wavy hair & {CLWABASE:.4f} & {CLWAB:.4f} & {CLWAC:.4f} & {CLWAF:.4f} & {CLWAR:.4f} & {CLWAT:.4f} & {CLWAZ:.4f} & {CLWAA:.4f} \\\\ \\hline
+         CelebA-young & {CLYOBASE:.4f} & {CLYOB:.4f} & {CLYOC:.4f} & {CLYOF:.4f} & {CLYOR:.4f} & {CLYOT:.4f} & {CLYOZ:.4f} & {CLYOA:.4f} \\\\ \\hline
     \\end{{tabular}}"""
 
     datasets = {
-        'ava_small': 'AVA',
+        'ava_small': 'AVAC',
+        'ava_small_regression': 'AVAR',
         'photozilla_ovr_aerial': 'PHAE',
         'photozilla_ovr_architecture': 'PHAR',
         'photozilla_ovr_event': 'PHEV',
@@ -60,7 +62,8 @@ def main():
         'flip': 'F',
         'rotation': 'R',
         'translation': 'T',
-        'zoom': 'Z'
+        'zoom': 'Z',
+        'autoaugment': 'A'
     }
 
     experiments = ['one_techs_low_intensity', 'one_techs_high_intensity']
@@ -87,9 +90,14 @@ def main():
             dataset_abbreviated = datasets[dataset]
 
             for augmentation in augmentations:
+    
                 augmentation_abbreviated = augmentations[augmentation]
                 abbreviation = f'{dataset_abbreviated}{augmentation_abbreviated}'
                 experiment_group_name = f'{experiment}_{dataset}'
+
+                if experiment == 'one_techs_low_intensity' and augmentation == 'autoaugment':
+                    experiment_results[experiment].update({abbreviation: 42069})
+                    continue
 
                 average_balacc = 0
                 for percentage in percentages:

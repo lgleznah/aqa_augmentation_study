@@ -4,18 +4,20 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 def main():
-    table_template = """\\begin{{tabular}}{{c||c|c|c|c|c|c}}
-         & Brightness & Contrast & Flip & Rotation & Translation & Zoom  \\\\ \\hhline{{=#=#======}}
-         AVA & {AVAB:.4f} & {AVAC:.4f} & {AVAF:.4f} & {AVAR:.4f} & {AVAT:.4f} & {AVAZ:.4f} \\\\ \\hline
-         Photozilla & {PHB:.4f} & {PHC:.4f} & {PHF:.4f} & {PHR:.4f} & {PHT:.4f} & {PHZ:.4f} \\\\ \\hline
-         CelebA attractiveness & {CELSB:.4f} & {CELSC:.4f} & {CELSF:.4f} & {CELSR:.4f} & {CELST:.4f} & {CELSZ:.4f} \\\\ \\hline
-         CelebA objective tasks & {CELOB:.4f} & {CELOC:.4f} & {CELOF:.4f} & {CELOR:.4f} & {CELOT:.4f} & {CELOZ:.4f} \\\\ \\hline
+    table_template = """\\begin{{tabular}}{{c||c|c|c|c|c|c|c}}
+         & Brightness & Contrast & Flip & Rotation & Translation & Zoom & AutoAugment  \\\\ \\hhline{{=#=#======}}
+         AVA small (classification) & {AVACB:.4f} & {AVACC:.4f} & {AVACF:.4f} & {AVACR:.4f} & {AVACT:.4f} & {AVACZ:.4f} & {AVACA:.4f} \\\\ \\hline
+         AVA small (regression) & {AVARB:.4f} & {AVARC:.4f} & {AVARF:.4f} & {AVARR:.4f} & {AVART:.4f} & {AVARZ:.4f} & {AVARA:.4f} \\\\ \\hline
+         Photozilla & {PHB:.4f} & {PHC:.4f} & {PHF:.4f} & {PHR:.4f} & {PHT:.4f} & {PHZ:.4f} & {PHA:.4f} \\\\ \\hline
+         CelebA attractiveness & {CELSB:.4f} & {CELSC:.4f} & {CELSF:.4f} & {CELSR:.4f} & {CELST:.4f} & {CELSZ:.4f} & {CELSA:.4f} \\\\ \\hline
+         CelebA objective tasks & {CELOB:.4f} & {CELOC:.4f} & {CELOF:.4f} & {CELOR:.4f} & {CELOT:.4f} & {CELOZ:.4f} & {CELOA:.4f} \\\\ \\hline
     \\end{{tabular}}"""
 
-    palette = ["#b5838d", "#ffb4a2", "#132a13", "#31572c", "#90a955", "#ecf39e"]
+    palette = ["#b5838d", "#ffb4a2", "#132a13", "#31572c", "#90a955", "#ecf39e", "#e8b017"]
 
     datasets_per_group = {
-        'AVA': ['ava_small'],
+        'AVAC': ['ava_small'],
+        'AVAR': ['ava_small_regression'],
         'PH': [
             'photozilla_ovr_aerial',
             'photozilla_ovr_architecture',
@@ -28,9 +30,8 @@ def main():
             'photozilla_ovr_wedding',
             'photozilla_ovr_wildlife'
         ],
-        'CELS': ['celeba_photos'],
+        'CELS': ['celeba_attractive'],
         'CELO': [
-            'celeba_photos',
             'celeba_earrings',
             'celeba_eyeglasses',
             'celeba_hair',
@@ -50,7 +51,8 @@ def main():
         'flip': 'F',
         'rotation': 'R',
         'translation': 'T',
-        'zoom': 'Z'
+        'zoom': 'Z',
+        'autoaugment': 'A'
     }
 
     intensities = ['one_techs_low_intensity', 'one_techs_high_intensity']
@@ -78,6 +80,10 @@ def main():
                 augmentation_abbreviation = augmentations[augmentation]
                 abbreviation = f'{group_abbreviation}{augmentation_abbreviation}'
 
+                if intensity == 'one_techs_low_intensity' and augmentation == 'autoaugment':
+                    experiment_results[intensity].update({abbreviation: 42069})
+                    continue
+
                 average_balacc_delta = 0
                 for dataset in datasets_per_group[group]:
                         for percentage in percentages:
@@ -97,16 +103,22 @@ def main():
     total_averages = []
     for augmentation in augmentations:
         avg_balacc = 0
+        count = 0
         for intensity in intensities:
+            if intensity == 'one_techs_low_intensity' and augmentation == 'autoaugment':
+                    continue
             for group in datasets_per_group:
+                count += 1
                 avg_balacc += experiment_results[intensity][f'{group}{augmentations[augmentation]}']
         
-        avg_balacc /= 8
+        avg_balacc /= count
         total_averages.append(avg_balacc)
 
     sns.set_palette(palette)
-    ax = sns.barplot(x=['Brightness','Contrast','Flip','Rotation','Translation','Zoom'], y=total_averages)
+    ax = sns.barplot(x=['Brightness','Contrast','Flip','Rotation','Translation','Zoom','AutoAugment'], y=total_averages)
     ax.set(xlabel="Augmentation technique", ylabel="Average balanced accuracy difference")
+    ax.tick_params(axis='x', labelrotation=25)
+    plt.tight_layout()
     fig = ax.get_figure()
     fig.savefig(os.path.join('figures', f'averages_barplot.eps'))
     plt.close()

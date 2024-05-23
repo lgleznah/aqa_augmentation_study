@@ -1,6 +1,8 @@
 baselines = {
-    'ava-photozilla': [
-        'baseline_ava_small',
+    'ava': [
+        'baseline_ava_small'
+    ],
+    'photozilla': [
         'baseline_photozilla_ovr_aerial',
         'baseline_photozilla_ovr_architecture',
         'baseline_photozilla_ovr_event',
@@ -24,6 +26,9 @@ baselines = {
         'baseline_celeba_strhair',
         'baseline_celeba_wavyhair',
         'baseline_celeba_young'
+    ],
+    'ava-regression': [
+        'baseline_ava_small_regression'
     ]
 }
 
@@ -32,8 +37,10 @@ techniques = ['brightness', 'contrast', 'flip', 'rotation', 'translation', 'zoom
 rates = [25, 50, 75, 100]
 
 low_intensity = {
-    'ava-photozilla': [
-        'one_techs_low_intensity_ava_small',
+    'ava': [
+        'one_techs_low_intensity_ava_small'
+    ],
+    'photozilla': [
         'one_techs_low_intensity_photozilla_ovr_aerial',
         'one_techs_low_intensity_photozilla_ovr_architecture',
         'one_techs_low_intensity_photozilla_ovr_event',
@@ -57,12 +64,17 @@ low_intensity = {
         'one_techs_low_intensity_celeba_strhair',
         'one_techs_low_intensity_celeba_wavyhair',
         'one_techs_low_intensity_celeba_young'
+    ],
+    'ava-regression': [
+        'one_techs_low_intensity_ava_small_regression'
     ]
 }
 
 high_intensity = {
-    'ava-photozilla': [
-        'one_techs_high_intensity_ava_small',
+    'ava': [
+        'one_techs_high_intensity_ava_small'
+    ],
+    'photozilla': [
         'one_techs_high_intensity_photozilla_ovr_aerial',
         'one_techs_high_intensity_photozilla_ovr_architecture',
         'one_techs_high_intensity_photozilla_ovr_event',
@@ -86,6 +98,9 @@ high_intensity = {
         'one_techs_high_intensity_celeba_strhair',
         'one_techs_high_intensity_celeba_wavyhair',
         'one_techs_high_intensity_celeba_young'
+    ],
+    'ava-regression': [
+        'one_techs_high_intensity_ava_small_regression'
     ]
 }
 

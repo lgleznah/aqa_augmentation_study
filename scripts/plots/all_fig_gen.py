@@ -41,7 +41,7 @@ def main():
         for exp_number, experiment in enumerate(experiments[1:], 1):
             rates_fig_gen(experiment, 'binary', base[exp_number], rates, ax=axes[f'ax{exp_number}'], metric='binary_balanced_accuracy', legend=False)
 
-        fig.legend(axes['ax0'].lines, ['Brightness', 'Contrast', 'Flip', 'Rotation', 'Translation', 'Zoom', 'Baseline'])
+        fig.legend(axes['ax0'].lines, ['Brightness', 'Contrast', 'Flip', 'Rotation', 'Translation', 'Zoom', 'Autoaugment', 'Baseline'])
         plt.savefig(os.path.join('figures', f'{experiment_supergroup}_{plot_name}.eps'))
         plt.close()
 

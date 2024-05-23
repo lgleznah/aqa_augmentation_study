@@ -67,7 +67,7 @@ def main():
     input_shape = vpd.MODELS_DICT[exp['base_model']][1]
     dataset_specs = vpd.DATASETS_DICT[experiment_dict['dataset']]
     label_columns = vpd.TRANSFORMERS_DICT[output_format][1]
-    is_autoaugment = 'autoaugment' == exp['layers'][0]['layer']
+    is_autoaugment = exp['layers'] and ('autoaugment' == exp['layers'][0]['layer'])
     autoaugment_rate = 0 if not is_autoaugment else exp['layers'][0]['rate']
     train_dataset, val_dataset, _ = generate_dataset_with_splits(dataset_specs, label_columns, output_format, input_shape, batch_size, test_split, val_split, random_seed=seed, autoaugment=is_autoaugment, autoaugment_rate=autoaugment_rate)
 
